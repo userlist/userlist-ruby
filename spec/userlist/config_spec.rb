@@ -3,9 +3,8 @@ require 'spec_helper'
 RSpec.describe Userlist::Config do
   subject { described_class.new }
 
-  after do
-    ENV.keys.grep(/USERLIST/).each { |key| ENV.delete(key) }
-  end
+  before { ENVCache.start! }
+  after { ENVCache.stop! }
 
   describe 'extending the default configuration' do
     it 'should be possible to add new configuration values' do
