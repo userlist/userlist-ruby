@@ -6,6 +6,8 @@ require 'openssl'
 module Userlist
   class Push
     class Client
+      include Userlist::Logging
+
       def initialize(config = Userlist.config)
         @config = config
       end
@@ -31,12 +33,14 @@ module Userlist
         end
       end
 
-      def request(endpoint, payload = {})
-        request = Net::HTTP::Post.new(endpoint)
+      def request(path, payload = {})
+        request = Net::HTTP::Post.new(path)
         request['Accept'] = 'application/json'
         request['Authorization'] = "Push #{token}"
         request['Content-Type'] = 'application/json; charset=UTF-8'
         request.body = JSON.dump(payload)
+
+        logger.debug "Sending #{request.method} to #{endpoint}#{request.path} with body #{request.body}"
 
         http.request(request)
       end

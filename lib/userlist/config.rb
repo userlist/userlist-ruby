@@ -2,7 +2,8 @@ module Userlist
   class Config
     DEFAULT_CONFIGURATION = {
       push_key:           nil,
-      push_endpoint:      'https://push.userlist.io/'
+      push_endpoint:      'https://push.userlist.io/',
+      log_level:          :warn
     }.freeze
 
     def initialize(config_from_initialize = {})
