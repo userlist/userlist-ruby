@@ -6,7 +6,7 @@ module Userlist
     }.freeze
 
     def initialize(config_from_initialize = {})
-      @config = DEFAULT_CONFIGURATION
+      @config = default_config
         .merge(config_from_initialize)
         .merge(config_from_environment)
     end
@@ -15,8 +15,12 @@ module Userlist
 
     attr_reader :config
 
+    def default_config
+      DEFAULT_CONFIGURATION
+    end
+
     def config_from_environment
-      DEFAULT_CONFIGURATION.keys.each_with_object({}) do |key, config|
+      default_config.keys.each_with_object({}) do |key, config|
         value = ENV["USERLIST_#{key.to_s.upcase}"]
         config[key] = value if value
       end
