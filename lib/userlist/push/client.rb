@@ -4,7 +4,7 @@ require 'net/http'
 require 'openssl'
 
 module Userlist
-  module Push
+  class Push
     class Client
       def initialize(config = Userlist.config)
         @config = config
