@@ -1,5 +1,6 @@
 require 'userlist/version'
 require 'userlist/config'
+require 'userlist/push'
 
 module Userlist
   class << self

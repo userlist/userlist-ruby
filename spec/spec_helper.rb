@@ -1,6 +1,8 @@
 require 'bundler/setup'
 require 'userlist'
 
+Dir[File.expand_path('../support/**/*.rb', __FILE__)].each { |f| require f }
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'

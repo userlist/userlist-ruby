@@ -5,8 +5,9 @@ module Userlist
       push_endpoint:      'https://push.userlist.io/'
     }.freeze
 
-    def initialize
+    def initialize(config_from_initialize = {})
       @config = DEFAULT_CONFIGURATION
+        .merge(config_from_initialize)
         .merge(config_from_environment)
     end
 
