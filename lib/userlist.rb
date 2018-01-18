@@ -1,5 +1,10 @@
 require 'userlist/version'
+require 'userlist/config'
 
 module Userlist
-  # Your code goes here...
+  class << self
+    def config
+      @config ||= Userlist::Config.new
+    end
+  end
 end
