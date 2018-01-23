@@ -40,7 +40,7 @@ module Userlist
         request['Content-Type'] = 'application/json; charset=UTF-8'
         request.body = JSON.dump(payload)
 
-        logger.debug "Sending #{request.method} to #{endpoint}#{request.path} with body #{request.body}"
+        logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
 
         http.request(request)
       end
