@@ -20,6 +20,10 @@ RSpec.describe Userlist::Push do
       }
     end
 
+    it 'should raise an error when no payload is given' do
+      expect { subject.event(nil).to raise_error(Argument, /payload/) }
+    end
+
     it 'should raise an error when no name is given' do
       payload.delete(:name)
 
@@ -57,6 +61,10 @@ RSpec.describe Userlist::Push do
       }
     end
 
+    it 'should raise an error when no payload is given' do
+      expect { subject.user(nil).to raise_error(Argument, /payload/) }
+    end
+
     it 'should raise an error when no identifier is given' do
       payload.delete(:identifier)
 
@@ -78,6 +86,10 @@ RSpec.describe Userlist::Push do
           name: 'John Doe Co.'
         }
       }
+    end
+
+    it 'should raise an error when no payload is given' do
+      expect { subject.company(nil).to raise_error(Argument, /payload/) }
     end
 
     it 'should raise an error when no identifier is given' do

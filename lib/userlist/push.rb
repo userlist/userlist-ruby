@@ -7,8 +7,9 @@ module Userlist
     end
 
     def event(payload = {})
-      raise ArgumentError, 'Missing required parameter :name' unless payload && payload[:name]
-      raise ArgumentError, 'Missing required parameter :user' unless payload && payload[:user]
+      raise ArgumentError, 'Missing required payload hash' unless payload
+      raise ArgumentError, 'Missing required parameter :name' unless payload[:name]
+      raise ArgumentError, 'Missing required parameter :user' unless payload[:user]
 
       payload[:occured_at] ||= Time.now
 
@@ -16,13 +17,15 @@ module Userlist
     end
 
     def user(payload = {})
-      raise ArgumentError, 'Missing required parameter :identifier' unless payload && payload[:identifier]
+      raise ArgumentError, 'Missing required payload hash' unless payload
+      raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
       client.post('/users', payload)
     end
 
     def company(payload = {})
-      raise ArgumentError, 'Missing required parameter :identifier' unless payload && payload[:identifier]
+      raise ArgumentError, 'Missing required payload hash' unless payload
+      raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
       client.post('/companies', payload)
     end
