@@ -33,9 +33,8 @@ module Userlist
     end
 
     def method_missing(name, *args, &block)
-      name = name.to_s
-
       if respond_to_missing?(name)
+        name = name.to_s
         method = name.match?(/=$/) ? :[]= : :[]
         name = name.sub(/=$/, '').to_sym
         config.public_send(method, name, *args, &block)
