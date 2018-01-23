@@ -2,8 +2,8 @@ require 'userlist/push/client'
 
 module Userlist
   class Push
-    def initialize(config = Userlist.config)
-      @config = config
+    def initialize(config = {})
+      @config = Userlist.config.merge(config)
     end
 
     def event(payload = {})

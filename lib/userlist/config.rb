@@ -12,7 +12,19 @@ module Userlist
         .merge(config_from_environment)
     end
 
-  private
+    def merge(other_config)
+      self.class.new(config.merge(other_config.to_h))
+    end
+
+    def to_h
+      config
+    end
+
+    def ==(other)
+      config == other.config
+    end
+
+  protected
 
     attr_reader :config
 
@@ -27,9 +39,9 @@ module Userlist
       end
     end
 
-    def respond_to_missing?(name)
+    def respond_to_missing?(name, include_private = false)
       name = name.to_s.sub(/=$/, '')
-      config.key?(name.to_sym)
+      config.key?(name.to_sym) || super
     end
 
     def method_missing(name, *args, &block)

@@ -8,8 +8,8 @@ module Userlist
     class Client
       include Userlist::Logging
 
-      def initialize(config = Userlist.config)
-        @config = config
+      def initialize(config = {})
+        @config = Userlist.config.merge(config)
       end
 
       def post(endpoint, payload = {})

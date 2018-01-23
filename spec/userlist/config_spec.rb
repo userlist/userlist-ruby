@@ -29,6 +29,31 @@ RSpec.describe Userlist::Config do
     end
   end
 
+  describe '#merge' do
+    let(:other_config) do
+      { push_key: 'other-key' }
+    end
+
+    it 'should return a new configuration object' do
+      expect(subject.merge(other_config)).to_not eq(subject)
+    end
+
+    it 'should change the given configuration' do
+      config = subject.merge(other_config)
+      expect(config.push_key).to eq(other_config[:push_key])
+    end
+
+    it 'should not change the original configuration' do
+      config = subject.merge(other_config)
+      expect(subject.push_key).to_not eq(config.push_key)
+    end
+
+    it 'should allow merging two configuration objects' do
+      config = subject.merge(Userlist::Config.new(other_config))
+      expect(config.push_key).to eq(other_config[:push_key])
+    end
+  end
+
   describe '#push_key' do
     it 'should have a default value' do
       expect(subject.push_key).to eq(nil)
