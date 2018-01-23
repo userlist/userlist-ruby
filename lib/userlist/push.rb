@@ -1,4 +1,5 @@
 require 'userlist/push/client'
+require 'userlist/push/strategies'
 
 module Userlist
   class Push
@@ -13,29 +14,29 @@ module Userlist
 
       payload[:occured_at] ||= Time.now
 
-      client.post('/events', payload)
+      strategy.call(:post, '/events', payload)
     end
 
     def user(payload = {})
       raise ArgumentError, 'Missing required payload hash' unless payload
       raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
-      client.post('/users', payload)
+      strategy.call(:post, '/users', payload)
     end
 
     def company(payload = {})
       raise ArgumentError, 'Missing required payload hash' unless payload
       raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
-      client.post('/companies', payload)
+      strategy.call(:post, '/companies', payload)
     end
 
   private
 
     attr_reader :config
 
-    def client
-      @client ||= Userlist::Push::Client.new(config)
+    def strategy
+      @strategy ||= Userlist::Push::Strategies.strategy_for(config.push_strategy, config)
     end
   end
 end

@@ -1,13 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe Userlist::Push do
-  subject { described_class.new }
+  subject { described_class.new(push_strategy: strategy) }
 
-  let(:client) { instance_double('Userlist::Push::Client') }
-
-  before do
-    allow(Userlist::Push::Client).to receive(:new).and_return(client)
-  end
+  let(:strategy) { instance_double('Userlist::Push::Strategies::Direct') }
 
   describe '#event' do
     let(:payload) do
@@ -37,14 +33,14 @@ RSpec.describe Userlist::Push do
     end
 
     it 'should send the payload to the endpoint' do
-      expect(client).to receive(:post).with('/events', payload)
+      expect(strategy).to receive(:call).with(:post, '/events', payload)
 
       subject.event(payload)
     end
 
     it 'should set the occured_at property' do
-      expect(client).to receive(:post)
-        .with('/events', hash_including(occured_at: an_instance_of(Time)))
+      expect(strategy).to receive(:call)
+        .with(:post, '/events', hash_including(occured_at: an_instance_of(Time)))
 
       subject.event(payload)
     end
@@ -72,7 +68,7 @@ RSpec.describe Userlist::Push do
     end
 
     it 'should send the payload to the endpoint' do
-      expect(client).to receive(:post).with('/users', payload)
+      expect(strategy).to receive(:call).with(:post, '/users', payload)
 
       subject.user(payload)
     end
@@ -99,7 +95,7 @@ RSpec.describe Userlist::Push do
     end
 
     it 'should send the payload to the endpoint' do
-      expect(client).to receive(:post).with('/companies', payload)
+      expect(strategy).to receive(:call).with(:post, '/companies', payload)
 
       subject.company(payload)
     end

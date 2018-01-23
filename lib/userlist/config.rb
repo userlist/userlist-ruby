@@ -3,6 +3,7 @@ module Userlist
     DEFAULT_CONFIGURATION = {
       push_key:           nil,
       push_endpoint:      'https://push.userlist.io/',
+      push_strategy:      :direct,
       log_level:          :warn
     }.freeze
 
