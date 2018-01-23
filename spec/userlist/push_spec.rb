@@ -37,6 +37,13 @@ RSpec.describe Userlist::Push do
 
       subject.event(payload)
     end
+
+    it 'should set the occured_at property' do
+      expect(client).to receive(:post)
+        .with('/events', hash_including(occured_at: an_instance_of(Time)))
+
+      subject.event(payload)
+    end
   end
 
   describe '#user' do

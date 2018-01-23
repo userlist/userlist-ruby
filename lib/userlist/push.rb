@@ -10,6 +10,8 @@ module Userlist
       raise ArgumentError, 'Missing required parameter :name' unless payload && payload[:name]
       raise ArgumentError, 'Missing required parameter :user' unless payload && payload[:user]
 
+      payload[:occured_at] ||= Time.now
+
       client.post('/events', payload)
     end
 
