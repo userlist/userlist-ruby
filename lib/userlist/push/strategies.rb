@@ -1,4 +1,5 @@
 require 'userlist/push/strategies/direct'
+require 'userlist/push/strategies/threaded'
 
 module Userlist
   class Push
