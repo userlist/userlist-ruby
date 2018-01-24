@@ -5,6 +5,10 @@ RSpec.describe Userlist::Push::Strategies::Direct do
 
   let(:client) { instance_double('Userlist::Push::Client') }
 
+  before do
+    allow(client).to receive(:post)
+  end
+
   it 'should pass on the configuration' do
     config = Userlist.config.merge(push_key: 'other-key')
     expect(Userlist::Push::Client).to receive(:new).with(config).and_return(client)
