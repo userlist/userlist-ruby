@@ -19,5 +19,7 @@ module Userlist
         logger
       end
     end
+
+    attr_writer :logger
   end
 end
