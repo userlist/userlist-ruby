@@ -1,3 +1,4 @@
+require 'userlist/push/strategies/null'
 require 'userlist/push/strategies/direct'
 require 'userlist/push/strategies/threaded'
 
