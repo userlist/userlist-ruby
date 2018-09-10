@@ -52,6 +52,13 @@ RSpec.describe Userlist::Config do
       config = subject.merge(Userlist::Config.new(other_config))
       expect(config.push_key).to eq(other_config[:push_key])
     end
+
+    it 'should inherit not changed configuration' do
+      config = subject.merge(other_config)
+      subject.push_strategy = :null
+      expect(config.push_key).to eq(other_config[:push_key])
+      expect(config.push_strategy).to eq(subject.push_strategy)
+    end
   end
 
   describe '#push_key' do
