@@ -20,6 +20,10 @@ module Userlist
       end
     end
 
+    def configure
+      yield config
+    end
+
     attr_writer :logger
   end
 end
