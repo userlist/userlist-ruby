@@ -1,4 +1,3 @@
-require 'thread'
 require 'userlist/push/strategies/threaded/worker'
 
 module Userlist

@@ -21,6 +21,7 @@ module Userlist
               begin
                 method, url, payload = *queue.pop
                 break if method == :stop
+
                 client.public_send(method, url, payload)
               rescue StandardError => exception
                 logger.error "Failed to deliver payload: [#{exception.class.name}] #{exception.message}"

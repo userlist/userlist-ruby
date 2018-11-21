@@ -1,5 +1,3 @@
-require 'thread'
-
 require 'userlist/push/client'
 require 'userlist/push/strategies'
 
