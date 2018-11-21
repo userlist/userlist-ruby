@@ -16,6 +16,7 @@ module Userlist
 
       strategy.call(:post, '/events', payload)
     end
+    alias track event
 
     def user(payload = {})
       raise ArgumentError, 'Missing required payload hash' unless payload
@@ -23,6 +24,7 @@ module Userlist
 
       strategy.call(:post, '/users', payload)
     end
+    alias identify user
 
     def company(payload = {})
       raise ArgumentError, 'Missing required payload hash' unless payload

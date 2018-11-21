@@ -44,6 +44,10 @@ RSpec.describe Userlist::Push do
 
       subject.event(payload)
     end
+
+    it 'should be aliased as #track' do
+      expect(subject.method(:track)).to eq(subject.method(:event))
+    end
   end
 
   describe '#user' do
@@ -71,6 +75,10 @@ RSpec.describe Userlist::Push do
       expect(strategy).to receive(:call).with(:post, '/users', payload)
 
       subject.user(payload)
+    end
+
+    it 'should be aliased as #identify' do
+      expect(subject.method(:identify)).to eq(subject.method(:user))
     end
   end
 
