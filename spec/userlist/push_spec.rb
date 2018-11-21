@@ -5,6 +5,26 @@ RSpec.describe Userlist::Push do
 
   let(:strategy) { instance_double('Userlist::Push::Strategies::Direct') }
 
+  [:event, :track, :user, :identify, :company].each do |method|
+    describe ".#{method}" do
+      let(:push_instance) { instance_double(described_class) }
+      let(:args) { [{ foo: 'bar' }] }
+
+      before do
+        allow(described_class).to receive(:new).and_return(push_instance)
+      end
+
+      after do
+        described_class.instance_variable_set(:@default_push_instance, nil)
+      end
+
+      it 'should forward the method call to the default push instance' do
+        expect(push_instance).to receive(method).with(*args)
+        described_class.send(method, *args)
+      end
+    end
+  end
+
   describe '#event' do
     let(:payload) do
       {
