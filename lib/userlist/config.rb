@@ -71,7 +71,7 @@ module Userlist
     def method_missing(name, *args, &block)
       if respond_to_missing?(name)
         name = name.to_s
-        method = name.match?(/=$/) ? :[]= : :[]
+        method = name =~ /=$/ ? :[]= : :[]
         name = name.sub(/=$/, '').to_sym
         send(method, name, *args, &block)
       else
