@@ -15,7 +15,7 @@ module Userlist
       @logger ||= begin
         logger = Logger.new(STDOUT)
         logger.progname = 'userlist'
-        logger.level = config.log_level
+        logger.level = Logger.const_get(config.log_level.to_s.upcase)
         logger
       end
     end
