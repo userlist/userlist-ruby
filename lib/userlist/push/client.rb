@@ -12,8 +12,20 @@ module Userlist
         @config = Userlist.config.merge(config)
       end
 
-      def post(endpoint, payload = {})
-        request(endpoint, payload)
+      def get(endpoint)
+        request(Net::HTTP::Get, endpoint)
+      end
+
+      def post(endpoint, payload = nil)
+        request(Net::HTTP::Post, endpoint, payload)
+      end
+
+      def put(endpoint, payload = nil)
+        request(Net::HTTP::Put, endpoint, payload)
+      end
+
+      def delete(endpoint)
+        request(Net::HTTP::Delete, endpoint)
       end
 
     private
@@ -33,12 +45,12 @@ module Userlist
         end
       end
 
-      def request(path, payload = {})
-        request = Net::HTTP::Post.new(path)
+      def request(method, path, payload = nil)
+        request = method.new(path)
         request['Accept'] = 'application/json'
         request['Authorization'] = "Push #{token}"
         request['Content-Type'] = 'application/json; charset=UTF-8'
-        request.body = JSON.dump(payload)
+        request.body = JSON.dump(payload) if payload
 
         logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
 
