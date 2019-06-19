@@ -15,53 +15,39 @@ module Userlist
       end
     end
 
-    def initialize(config = {})
-      @config = Userlist.config.merge(config)
-      @mutex = Mutex.new
+    def initialize(configuration = {})
+      @config = Userlist.config.merge(configuration)
+      @strategy = Userlist::Push::Strategies.strategy_for(config.push_strategy, config)
     end
 
     def event(payload = {})
-      with_mutex do
-        raise ArgumentError, 'Missing required payload hash' unless payload
-        raise ArgumentError, 'Missing required parameter :name' unless payload[:name]
-        raise ArgumentError, 'Missing required parameter :user' unless payload[:user]
+      raise ArgumentError, 'Missing required payload hash' unless payload
+      raise ArgumentError, 'Missing required parameter :name' unless payload[:name]
+      raise ArgumentError, 'Missing required parameter :user' unless payload[:user]
 
-        payload[:occured_at] ||= Time.now
+      payload[:occured_at] ||= Time.now
 
-        strategy.call(:post, '/events', payload)
-      end
+      strategy.call(:post, '/events', payload)
     end
     alias track event
 
     def user(payload = {})
-      with_mutex do
-        raise ArgumentError, 'Missing required payload hash' unless payload
-        raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
+      raise ArgumentError, 'Missing required payload hash' unless payload
+      raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
-        strategy.call(:post, '/users', payload)
-      end
+      strategy.call(:post, '/users', payload)
     end
     alias identify user
 
     def company(payload = {})
-      with_mutex do
-        raise ArgumentError, 'Missing required payload hash' unless payload
-        raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
+      raise ArgumentError, 'Missing required payload hash' unless payload
+      raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
-        strategy.call(:post, '/companies', payload)
-      end
+      strategy.call(:post, '/companies', payload)
     end
 
   private
 
-    attr_reader :config
-
-    def strategy
-      @strategy ||= Userlist::Push::Strategies.strategy_for(config.push_strategy, config)
-    end
-
-    def with_mutex(&block)
-      @mutex.synchronize(&block)
-    end
+    attr_reader :config, :strategy
   end
 end
