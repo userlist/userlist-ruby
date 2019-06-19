@@ -23,8 +23,8 @@ module Userlist
                 break if method == :stop
 
                 client.public_send(method, url, payload)
-              rescue StandardError => exception
-                logger.error "Failed to deliver payload: [#{exception.class.name}] #{exception.message}"
+              rescue StandardError => e
+                logger.error "Failed to deliver payload: [#{e.class.name}] #{e.message}"
               end
             end
 
