@@ -19,10 +19,10 @@ module Userlist
 
             loop do
               begin
-                method, url, payload = *queue.pop
+                method, *args = *queue.pop
                 break if method == :stop
 
-                client.public_send(method, url, payload)
+                client.public_send(method, *args)
               rescue StandardError => e
                 logger.error "Failed to deliver payload: [#{e.class.name}] #{e.message}"
               end

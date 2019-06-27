@@ -32,6 +32,14 @@ RSpec.describe Userlist::Push::Strategies::Threaded::Worker do
     5.times { queue.push([:post, '/events', payload]) }
   end
 
+  it 'should process requests with and without payload' do
+    expect(client).to receive(:post).with('/user', payload).once
+    expect(client).to receive(:delete).with('/user/identifier').once
+
+    queue.push([:post, '/user', payload])
+    queue.push([:delete, '/user/identifier'])
+  end
+
   it 'should log failed requests' do
     allow(client).to receive(:post).and_raise(StandardError)
     queue.push([:post, '/events', payload])
