@@ -2,13 +2,19 @@ require 'userlist/push/client'
 require 'userlist/push/strategies'
 
 require 'userlist/push/resource'
+require 'userlist/push/relation'
+
+require 'userlist/push/operations/create'
+require 'userlist/push/operations/delete'
+
 require 'userlist/push/user'
 require 'userlist/push/company'
 require 'userlist/push/event'
+
 module Userlist
   class Push
     class << self
-      [:event, :track, :user, :identify, :company].each do |method|
+      [:event, :track, :user, :identify, :company, :users, :events, :companies].each do |method|
         define_method(method) { |*args| default_push_instance.send(method, *args) }
       end
 
@@ -24,34 +30,33 @@ module Userlist
       @strategy = Userlist::Push::Strategies.strategy_for(config.push_strategy, config)
     end
 
-    def event(payload = {})
-      raise ArgumentError, 'Missing required payload hash' unless payload
-      raise ArgumentError, 'Missing required parameter :name' unless payload[:name]
-      raise ArgumentError, 'Missing required parameter :user' unless payload[:user]
+    attr_reader :config, :strategy
 
-      payload[:occured_at] ||= Time.now
-
-      strategy.call(:post, '/events', payload)
+    def events
+      @events ||= Relation.new(self, Event, [Operations::Create])
     end
-    alias track event
+
+    def users
+      @users ||= Relation.new(self, User, [Operations::Create, Operations::Delete])
+    end
+
+    def companies
+      @companies ||= Relation.new(self, Company, [Operations::Create, Operations::Delete])
+    end
+
+    def event(payload = {})
+      events.create(payload)
+    end
 
     def user(payload = {})
-      raise ArgumentError, 'Missing required payload hash' unless payload
-      raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
-
-      strategy.call(:post, '/users', payload)
+      users.create(payload)
     end
-    alias identify user
 
     def company(payload = {})
-      raise ArgumentError, 'Missing required payload hash' unless payload
-      raise ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
-
-      strategy.call(:post, '/companies', payload)
+      companies.create(payload)
     end
 
-  private
-
-    attr_reader :config, :strategy
+    alias track event
+    alias identify user
   end
 end

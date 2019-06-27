@@ -5,23 +5,82 @@ RSpec.describe Userlist::Push do
 
   let(:strategy) { instance_double('Userlist::Push::Strategies::Direct') }
 
-  [:event, :track, :user, :identify, :company].each do |method|
-    describe ".#{method}" do
-      let(:push_instance) { instance_double(described_class) }
-      let(:args) { [{ foo: 'bar' }] }
+  describe 'delegated class methods' do
+    let(:push_instance) { instance_double(described_class) }
 
-      before do
-        allow(described_class).to receive(:new).and_return(push_instance)
-      end
+    before do
+      allow(described_class).to receive(:new).and_return(push_instance)
+    end
 
-      after do
-        described_class.instance_variable_set(:@default_push_instance, nil)
-      end
+    after do
+      described_class.instance_variable_set(:@default_push_instance, nil)
+    end
 
-      it 'should forward the method call to the default push instance' do
-        expect(push_instance).to receive(method).with(*args)
-        described_class.send(method, *args)
+    [:event, :track, :user, :identify, :company].each do |method|
+      describe ".#{method}" do
+        let(:args) { [{ foo: 'bar' }] }
+
+        it 'should forward the method call to the default push instance' do
+          expect(push_instance).to receive(method).with(*args)
+          described_class.send(method, *args)
+        end
       end
+    end
+
+    [:users, :events, :companies].each do |method|
+      describe ".#{method}" do
+        it 'should forward the method call to the default push instance' do
+          expect(push_instance).to receive(method)
+          described_class.send(method)
+        end
+      end
+    end
+  end
+
+  describe '#users' do
+    let(:relation) { subject.users }
+
+    it 'should return a relation' do
+      expect(relation).to be_an_instance_of(Userlist::Push::Relation)
+      expect(relation.type).to eq(Userlist::Push::User)
+    end
+
+    it 'should support the create operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    end
+
+    it 'should support the delete operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Delete::ClassMethods)
+    end
+  end
+
+  describe '#companies' do
+    let(:relation) { subject.companies }
+
+    it 'should return a relation' do
+      expect(relation).to be_an_instance_of(Userlist::Push::Relation)
+      expect(relation.type).to eq(Userlist::Push::Company)
+    end
+
+    it 'should support the create operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    end
+
+    it 'should support the delete operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Delete::ClassMethods)
+    end
+  end
+
+  describe '#events' do
+    let(:relation) { subject.events }
+
+    it 'should return a relation' do
+      expect(relation).to be_an_instance_of(Userlist::Push::Relation)
+      expect(relation.type).to eq(Userlist::Push::Event)
+    end
+
+    it 'should support the create operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
     end
   end
 
@@ -36,32 +95,10 @@ RSpec.describe Userlist::Push do
       }
     end
 
-    it 'should raise an error when no payload is given' do
-      expect { subject.event(nil) }.to raise_error(ArgumentError, /payload/)
-    end
+    let(:relation) { subject.events }
 
-    it 'should raise an error when no name is given' do
-      payload.delete(:name)
-
-      expect { subject.event(payload) }.to raise_error(ArgumentError, /name/)
-    end
-
-    it 'should raise an error when no user is given' do
-      payload.delete(:user)
-
-      expect { subject.event(payload) }.to raise_error(ArgumentError, /user/)
-    end
-
-    it 'should send the payload to the endpoint' do
-      expect(strategy).to receive(:call).with(:post, '/events', payload)
-
-      subject.event(payload)
-    end
-
-    it 'should set the occured_at property' do
-      expect(strategy).to receive(:call)
-        .with(:post, '/events', hash_including(occured_at: an_instance_of(Time)))
-
+    it 'should delegate the call to the relation\'s create method' do
+      expect(relation).to receive(:create).with(payload)
       subject.event(payload)
     end
 
@@ -81,19 +118,10 @@ RSpec.describe Userlist::Push do
       }
     end
 
-    it 'should raise an error when no payload is given' do
-      expect { subject.user(nil) }.to raise_error(ArgumentError, /payload/)
-    end
+    let(:relation) { subject.users }
 
-    it 'should raise an error when no identifier is given' do
-      payload.delete(:identifier)
-
-      expect { subject.user }.to raise_error(ArgumentError, /identifier/)
-    end
-
-    it 'should send the payload to the endpoint' do
-      expect(strategy).to receive(:call).with(:post, '/users', payload)
-
+    it 'should delegate the call to the relation\'s create method' do
+      expect(relation).to receive(:create).with(payload)
       subject.user(payload)
     end
 
@@ -112,19 +140,10 @@ RSpec.describe Userlist::Push do
       }
     end
 
-    it 'should raise an error when no payload is given' do
-      expect { subject.company(nil) }.to raise_error(ArgumentError, /payload/)
-    end
+    let(:relation) { subject.companies }
 
-    it 'should raise an error when no identifier is given' do
-      payload.delete(:identifier)
-
-      expect { subject.company }.to raise_error(ArgumentError, /identifier/)
-    end
-
-    it 'should send the payload to the endpoint' do
-      expect(strategy).to receive(:call).with(:post, '/companies', payload)
-
+    it 'should delegate the call to the relation\'s create method' do
+      expect(relation).to receive(:create).with(payload)
       subject.company(payload)
     end
   end
