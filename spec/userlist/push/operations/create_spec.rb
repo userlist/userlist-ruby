@@ -31,5 +31,9 @@ RSpec.describe Userlist::Push::Operations::Create do
       expect(resource_type).to receive(:new).with(payload).and_return(resource)
       relation.create(payload)
     end
+
+    it 'should be aliased as #push' do
+      expect(relation.method(:push)).to eq(relation.method(:create))
+    end
   end
 end

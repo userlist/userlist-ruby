@@ -7,6 +7,8 @@ module Userlist
             resource = from_payload(payload)
             strategy.call(:post, endpoint, resource.attributes)
           end
+
+          alias push create
         end
 
         def included(base)
