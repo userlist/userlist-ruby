@@ -37,7 +37,7 @@ RSpec.describe Userlist::Push do
     end
 
     it 'should raise an error when no payload is given' do
-      expect { subject.event(nil).to raise_error(Argument, /payload/) }
+      expect { subject.event(nil) }.to raise_error(ArgumentError, /payload/)
     end
 
     it 'should raise an error when no name is given' do
@@ -82,7 +82,7 @@ RSpec.describe Userlist::Push do
     end
 
     it 'should raise an error when no payload is given' do
-      expect { subject.user(nil).to raise_error(Argument, /payload/) }
+      expect { subject.user(nil) }.to raise_error(ArgumentError, /payload/)
     end
 
     it 'should raise an error when no identifier is given' do
@@ -113,7 +113,7 @@ RSpec.describe Userlist::Push do
     end
 
     it 'should raise an error when no payload is given' do
-      expect { subject.company(nil).to raise_error(Argument, /payload/) }
+      expect { subject.company(nil) }.to raise_error(ArgumentError, /payload/)
     end
 
     it 'should raise an error when no identifier is given' do
