@@ -1,6 +1,10 @@
 require 'userlist/push/client'
 require 'userlist/push/strategies'
 
+require 'userlist/push/resource'
+require 'userlist/push/user'
+require 'userlist/push/company'
+require 'userlist/push/event'
 module Userlist
   class Push
     class << self
