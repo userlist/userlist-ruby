@@ -4,6 +4,7 @@ require 'userlist/version'
 require 'userlist/config'
 require 'userlist/logging'
 require 'userlist/push'
+require 'userlist/token'
 
 module Userlist
   class << self

@@ -2,9 +2,11 @@ module Userlist
   class Config
     DEFAULT_CONFIGURATION = {
       push_key: nil,
+      push_id: nil,
       push_endpoint: 'https://push.userlist.io/',
       push_strategy: :threaded,
-      log_level: :warn
+      log_level: :warn,
+      token_lifetime: 3600
     }.freeze
 
     def initialize(config_from_initialize = {})
@@ -34,6 +36,11 @@ module Userlist
 
     def ==(other)
       config == other.config && parent == other.parent
+    end
+
+    def token_lifetime
+      value = self[:token_lifetime]
+      value && value.to_i
     end
 
   protected

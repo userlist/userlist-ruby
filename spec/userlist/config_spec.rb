@@ -77,6 +77,22 @@ RSpec.describe Userlist::Config do
     end
   end
 
+  describe '#push_id' do
+    it 'should have a default value' do
+      expect(subject.push_id).to eq(nil)
+    end
+
+    it 'should accept values from the ENV' do
+      ENV['USERLIST_PUSH_ID'] = 'push-id-from-env'
+      expect(subject.push_id).to eq('push-id-from-env')
+    end
+
+    it 'should accept values via the setter' do
+      subject.push_id = 'push-id-from-setter'
+      expect(subject.push_id).to eq('push-id-from-setter')
+    end
+  end
+
   describe '#push_endpoint' do
     it 'should have a default value' do
       expect(subject.push_endpoint).to eq('https://push.userlist.io/')
@@ -90,6 +106,22 @@ RSpec.describe Userlist::Config do
     it 'should accept values via the setter' do
       subject.push_endpoint = 'https://push.from.setter/'
       expect(subject.push_endpoint).to eq('https://push.from.setter/')
+    end
+  end
+
+  describe '#token_lifetime' do
+    it 'should have a default value' do
+      expect(subject.token_lifetime).to eq(3600)
+    end
+
+    it 'should accept values from the ENV' do
+      ENV['USERLIST_TOKEN_LIFETIME'] = '60'
+      expect(subject.token_lifetime).to eq(60)
+    end
+
+    it 'should accept values via the setter' do
+      subject.token_lifetime = 123
+      expect(subject.token_lifetime).to eq(123)
     end
   end
 end
