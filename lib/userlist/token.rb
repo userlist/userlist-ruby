@@ -60,7 +60,7 @@ module Userlist
     def encode(payload)
       payload = JSON.generate(payload) unless payload.is_a?(String)
 
-      Base64.urlsafe_encode64(payload, padding: false)
+      Base64.urlsafe_encode64(payload).tr('=', '')
     end
   end
 end
