@@ -39,8 +39,7 @@ module Userlist
     end
 
     def token_lifetime
-      value = self[:token_lifetime]
-      value && value.to_i
+      self[:token_lifetime]&.to_i
     end
 
   protected
@@ -59,7 +58,7 @@ module Userlist
     end
 
     def key?(key)
-      config.key?(key) || parent && parent.key?(key)
+      config.key?(key) || parent&.key?(key)
     end
 
     def [](key)

@@ -1,10 +1,10 @@
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
   Exclude:
     - 'bin/*'
     - 'Guardfile'
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/ModuleLength:
@@ -38,7 +38,7 @@ Layout/EndAlignment:
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 Style/FrozenStringLiteralComment:

@@ -20,7 +20,7 @@ module Userlist
         attr_reader :queue, :worker
 
         def stop_worker
-          worker && worker.stop
+          worker&.stop
         end
       end
     end
