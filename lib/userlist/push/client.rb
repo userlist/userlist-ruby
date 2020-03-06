@@ -10,6 +10,9 @@ module Userlist
 
       def initialize(config = {})
         @config = Userlist.config.merge(config)
+
+        raise Userlist::ConfigurationError, :push_key unless config.push_key
+        raise Userlist::ConfigurationError, :push_endpoint unless config.push_endpoint
       end
 
       def get(endpoint)

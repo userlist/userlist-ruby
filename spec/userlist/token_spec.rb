@@ -19,7 +19,7 @@ RSpec.describe Userlist::Token do
       let(:push_key) { nil }
 
       it 'should raise an Userlist::ArgumentError' do
-        expect { token }.to raise_error(Userlist::ArgumentError, /push_key/)
+        expect { token }.to raise_error(Userlist::ConfigurationError, /push_key/)
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe Userlist::Token do
       let(:push_id) { nil }
 
       it 'should raise an Userlist::ArgumentError' do
-        expect { token }.to raise_error(Userlist::ArgumentError, /push_id/)
+        expect { token }.to raise_error(Userlist::ConfigurationError, /push_id/)
       end
     end
 

@@ -7,6 +7,28 @@ RSpec.describe Userlist::Push::Client do
     Userlist::Config.new(push_key: 'test-push-key', push_endpoint: 'https://endpoint.test.local')
   end
 
+  describe '#initialize' do
+    context 'when the push_key is missing' do
+      let(:config) do
+        Userlist::Config.new(push_key: nil, push_endpoint: 'https://endpoint.test.local')
+      end
+
+      it 'should raise an error message' do
+        expect { subject }.to raise_error(Userlist::ConfigurationError, /push_key/)
+      end
+    end
+
+    context 'when the push_endpoint is missing' do
+      let(:config) do
+        Userlist::Config.new(push_key: 'test-push-key', push_endpoint: nil)
+      end
+
+      it 'should raise an error message' do
+        expect { subject }.to raise_error(Userlist::ConfigurationError, /push_endpoint/)
+      end
+    end
+  end
+
   describe '#get' do
     it 'should send the request to the given endpoint' do
       stub_request(:get, 'https://endpoint.test.local/events')
