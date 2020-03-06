@@ -18,24 +18,24 @@ RSpec.describe Userlist::Token do
     context 'when no push key is configured' do
       let(:push_key) { nil }
 
-      it 'should raise an ArgumentError' do
-        expect { token }.to raise_error(ArgumentError, /push_key/)
+      it 'should raise an Userlist::ArgumentError' do
+        expect { token }.to raise_error(Userlist::ArgumentError, /push_key/)
       end
     end
 
     context 'when no push id is configured' do
       let(:push_id) { nil }
 
-      it 'should raise an ArgumentError' do
-        expect { token }.to raise_error(ArgumentError, /push_id/)
+      it 'should raise an Userlist::ArgumentError' do
+        expect { token }.to raise_error(Userlist::ArgumentError, /push_id/)
       end
     end
 
     context 'when no identifier is given' do
       let(:identifier) { nil }
 
-      it 'should raise an ArgumentError' do
-        expect { token }.to raise_error(ArgumentError, /identifier/)
+      it 'should raise an Userlist::ArgumentError' do
+        expect { token }.to raise_error(Userlist::ArgumentError, /identifier/)
       end
     end
 

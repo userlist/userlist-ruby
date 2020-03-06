@@ -7,6 +7,8 @@ require 'userlist/push'
 require 'userlist/token'
 
 module Userlist
+  class ArgumentError < ArgumentError; end
+
   class << self
     def config
       @config ||= Userlist::Config.new

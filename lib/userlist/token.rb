@@ -3,9 +3,9 @@ module Userlist
     def self.generate(identifier, configuration = {})
       config = Userlist.config.merge(configuration)
 
-      raise ArgumentError, 'Missing required configuration push_key' unless config.push_key
-      raise ArgumentError, 'Missing required configuration push_id' unless config.push_id
-      raise ArgumentError, 'Missing required identifier' unless identifier
+      raise Userlist::ArgumentError, 'Missing required configuration push_key' unless config.push_key
+      raise Userlist::ArgumentError, 'Missing required configuration push_id' unless config.push_id
+      raise Userlist::ArgumentError, 'Missing required identifier' unless identifier
 
       now = Time.now.utc.to_i
 

@@ -6,8 +6,8 @@ module Userlist
       end
 
       def initialize(attributes = {})
-        raise ArgumentError, 'Missing required attributes hash' unless attributes
-        raise ArgumentError, 'Missing required parameter :identifier' unless attributes[:identifier]
+        raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
+        raise Userlist::ArgumentError, 'Missing required parameter :identifier' unless attributes[:identifier]
 
         super
       end

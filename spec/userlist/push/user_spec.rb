@@ -12,12 +12,12 @@ RSpec.describe Userlist::Push::User do
   end
 
   it 'should raise an error when no payload is given' do
-    expect { described_class.new(nil) }.to raise_error(ArgumentError, /attributes/)
+    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /attributes/)
   end
 
   it 'should raise an error when no identifier is given' do
     payload.delete(:identifier)
 
-    expect { described_class.new(payload) }.to raise_error(ArgumentError, /identifier/)
+    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /identifier/)
   end
 end

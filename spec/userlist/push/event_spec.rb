@@ -12,19 +12,19 @@ RSpec.describe Userlist::Push::Event do
   end
 
   it 'should raise an error when no payload is given' do
-    expect { described_class.new(nil) }.to raise_error(ArgumentError, /attributes/)
+    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /attributes/)
   end
 
   it 'should raise an error when no name is given' do
     payload.delete(:name)
 
-    expect { described_class.new(payload) }.to raise_error(ArgumentError, /name/)
+    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /name/)
   end
 
   it 'should raise an error when no user is given' do
     payload.delete(:user)
 
-    expect { described_class.new(payload) }.to raise_error(ArgumentError, /user/)
+    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /user/)
   end
 
   it 'should set the occured_at property' do
