@@ -3,9 +3,6 @@ require 'spec_helper'
 RSpec.describe Userlist::Config do
   subject { described_class.new }
 
-  before { ENVCache.start! }
-  after { ENVCache.stop! }
-
   describe 'extending the default configuration' do
     it 'should be possible to add new configuration values' do
       config_class = Class.new(described_class) do

@@ -47,3 +47,8 @@ private
 
   attr_reader :pattern
 end
+
+RSpec.configure do |config|
+  config.before { ENVCache.start! }
+  config.after { ENVCache.stop! }
+end

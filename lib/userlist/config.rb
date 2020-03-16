@@ -62,7 +62,7 @@ module Userlist
     end
 
     def [](key)
-      config[key] || parent && parent[key]
+      config.key?(key) ? config[key] : parent && parent[key]
     end
 
     def []=(key, value)

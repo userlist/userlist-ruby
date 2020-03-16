@@ -8,6 +8,24 @@ RSpec.describe Userlist::Push::Client do
   end
 
   describe '#initialize' do
+    context 'when using the default configuration' do
+      before do
+        ENV['USERLIST_PUSH_KEY'] = 'test-push-key'
+      end
+
+      it 'should not raise an error message' do
+        expect { described_class.new }.to_not raise_error
+      end
+    end
+
+    context 'when configured using a hash' do
+      let(:config) { { push_key: 'test-push-key' } }
+
+      it 'should not raise an error message' do
+        expect { described_class.new(config) }.to_not raise_error
+      end
+    end
+
     context 'when the push_key is missing' do
       let(:config) do
         Userlist::Config.new(push_key: nil, push_endpoint: 'https://endpoint.test.local')
