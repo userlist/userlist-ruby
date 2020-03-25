@@ -44,15 +44,14 @@ end
 
 The possible configuration values are listed in the table below.
 
-| Name | Default value | Description |
-|------|---------------|-------------|
-| `push_key` | `nil` | The push key for your account. See [Push API settings](https://app.userlist.com/settings/push). |
-| `push_id` | `nil` | The push id for your account. See [Push API settings](https://app.userlist.com/settings/push). |
-| `push_endpoint` | `https://push.userlist.com/` | The HTTP endpoint that the library will send data to. |
-| `push_strategy` | `:threaded` | The strategy to use to send data to the HTTP endpoint. Possible values are `:threaded`, `:direct`, and `:null`.
-| `log_level` | `:warn` | The log level for Userlist related log messages. Possible values are `:debug |, :error, :fatal, :info, and :warn
-| `token_lifetime` | `3600` | The lifetime of generated in-app messages tokens in seconds |
-
+| Name             | Default value                | Description                                                                                                             |
+| ---------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `push_key`       | `nil`                        | The push key for your account. See [Push API settings](https://app.userlist.com/settings/push).                         |
+| `push_id`        | `nil`                        | The push id for your account. See [Push API settings](https://app.userlist.com/settings/push).                          |
+| `push_endpoint`  | `https://push.userlist.com/` | The HTTP endpoint that the library will send data to.                                                                   |
+| `push_strategy`  | `:threaded`                  | The strategy to use to send data to the HTTP endpoint. Possible values are `:threaded`, `:direct`, and `:null`.         |
+| `log_level`      | `:warn`                      | The log level for Userlist related log messages. Possible values are `:debug`, `:error`, `:fatal`, `:info`, and `:warn` |
+| `token_lifetime` | `3600`                       | The lifetime of generated in-app messages tokens in seconds                                                             |
 
 ### Disabling in development and test environments
 
@@ -87,7 +86,6 @@ It's also possible to delete a user from Userlist, using the `Userlist::Push.use
 Userlist::Push.users.delete('user-1')
 ```
 
-
 ### Tracking Events
 
 To track custom events use the `Userlist::Push.events.push` method.
@@ -101,7 +99,6 @@ Userlist::Push.events.push(
   }
 )
 ```
-
 
 ### Tokens for in-app messages
 
@@ -120,7 +117,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/userlistio/userlist. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/userlistio/userlist>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
