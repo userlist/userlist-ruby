@@ -6,9 +6,9 @@ Gem::Specification.new do |spec|
   spec.name          = 'userlist'
   spec.version       = Userlist::VERSION
   spec.authors       = ['Benedikt Deicke']
-  spec.email         = ['benedikt@userlist.io']
+  spec.email         = ['benedikt@userlist.com']
 
-  spec.summary       = 'Ruby wrapper for the Userlist.io API'
+  spec.summary       = 'Ruby wrapper for the Userlist API'
   spec.homepage      = 'http://github.com/userlistio/userlist-ruby'
   spec.license       = 'MIT'
 

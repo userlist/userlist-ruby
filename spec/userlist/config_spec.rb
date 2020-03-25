@@ -92,7 +92,7 @@ RSpec.describe Userlist::Config do
 
   describe '#push_endpoint' do
     it 'should have a default value' do
-      expect(subject.push_endpoint).to eq('https://push.userlist.io/')
+      expect(subject.push_endpoint).to eq('https://push.userlist.com/')
     end
 
     it 'should accept values from the ENV' do

@@ -3,7 +3,7 @@ module Userlist
     DEFAULT_CONFIGURATION = {
       push_key: nil,
       push_id: nil,
-      push_endpoint: 'https://push.userlist.io/',
+      push_endpoint: 'https://push.userlist.com/',
       push_strategy: :threaded,
       log_level: :warn,
       token_lifetime: 3600
