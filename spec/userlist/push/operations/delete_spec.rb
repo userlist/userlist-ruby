@@ -9,9 +9,22 @@ RSpec.describe Userlist::Push::Operations::Delete do
   describe '.delete' do
     let(:identifier) { 'identifier' }
 
-    it 'should send the request to the endpoint' do
-      expect(strategy).to receive(:call).with(:delete, '/users/identifier')
-      relation.delete(identifier)
+    context 'when given an identifier' do
+      it 'should send the request to the endpoint' do
+        expect(strategy).to receive(:call).with(:delete, '/users/identifier')
+        relation.delete(identifier)
+      end
+    end
+
+    context 'when given a payload hash' do
+      let(:payload) do
+        { identifier: identifier }
+      end
+
+      it 'should send the request to the endpoint' do
+        expect(strategy).to receive(:call).with(:delete, '/users/identifier')
+        relation.delete(payload)
+      end
     end
   end
 end

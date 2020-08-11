@@ -22,11 +22,6 @@ RSpec.describe Userlist::Push::Operations::Create do
       allow(strategy).to receive(:call)
     end
 
-    it 'should send the payload to the endpoint' do
-      expect(strategy).to receive(:call).with(:post, '/users', payload)
-      relation.create(payload)
-    end
-
     it 'should create a new instance of the resource_type' do
       expect(resource_type).to receive(:new).with(payload).and_return(resource)
       relation.create(payload)
@@ -34,6 +29,24 @@ RSpec.describe Userlist::Push::Operations::Create do
 
     it 'should be aliased as #push' do
       expect(relation.method(:push)).to eq(relation.method(:create))
+    end
+
+    context 'when given a payload hash' do
+      it 'should send the payload to the endpoint' do
+        expect(strategy).to receive(:call).with(:post, '/users', payload)
+        relation.create(payload)
+      end
+    end
+
+    context 'when given an identifier' do
+      let(:payload) do
+        { identifier: 'identifier' }
+      end
+
+      it 'should send a simple payload to the endpoint' do
+        expect(strategy).to receive(:call).with(:post, '/users', payload)
+        relation.create(payload[:identifier])
+      end
     end
   end
 end

@@ -30,6 +30,23 @@ RSpec.describe Userlist::Push::Resource do
     end
   end
 
+  describe '.from_payload' do
+    it 'should create a new instance of the resource' do
+      resource = described_class.from_payload(attributes)
+      expect(resource).to be_kind_of(described_class)
+    end
+
+    it 'should set the given attributes' do
+      resource = described_class.from_payload(attributes)
+      expect(resource.attributes).to match(attributes)
+    end
+
+    it 'should convert strings into simple payloads' do
+      resource = described_class.from_payload('identifier')
+      expect(resource.attributes).to match({ identifier: 'identifier' })
+    end
+  end
+
   describe 'additional methods' do
     context 'when there is an corresponding attribute' do
       it 'should return the attribute\'s value' do

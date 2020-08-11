@@ -13,7 +13,7 @@ module Userlist
     private
 
       def from_payload(payload)
-        type.new(payload)
+        type.from_payload(payload)
       end
 
       def endpoint

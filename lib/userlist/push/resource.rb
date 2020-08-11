@@ -9,6 +9,12 @@ module Userlist
         def endpoint
           "/#{resource_name.downcase}s"
         end
+
+        def from_payload(payload)
+          payload = { identifier: payload } if payload.is_a?(String)
+
+          new(payload)
+        end
       end
 
       attr_reader :attributes
