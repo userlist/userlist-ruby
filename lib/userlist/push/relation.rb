@@ -12,8 +12,8 @@ module Userlist
 
     private
 
-      def from_payload(payload)
-        type.from_payload(payload)
+      def from_payload(payload, config = scope.config)
+        type.from_payload(payload, config)
       end
 
       def endpoint

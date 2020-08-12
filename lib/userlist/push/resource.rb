@@ -10,7 +10,7 @@ module Userlist
           "/#{resource_name.downcase}s"
         end
 
-        def from_payload(payload)
+        def from_payload(payload, _config = Userlist.config)
           payload = { identifier: payload } if payload.is_a?(String)
 
           new(payload)

@@ -6,6 +6,7 @@ module Userlist
         raise Userlist::ArgumentError, 'Missing required parameter :name' unless attributes[:name]
         raise Userlist::ArgumentError, 'Missing required parameter :user' unless attributes[:user]
 
+        attributes[:user] = Userlist::Push::User.from_payload(attributes[:user])
         attributes[:occured_at] ||= Time.now
 
         super
