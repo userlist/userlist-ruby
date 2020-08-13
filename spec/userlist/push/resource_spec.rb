@@ -16,6 +16,8 @@ RSpec.describe Userlist::Push::Resource do
     }
   end
 
+  let(:config) { Userlist.config }
+
   subject { dummy_resource.new(attributes) }
 
   describe '.resource_name' do
@@ -44,6 +46,30 @@ RSpec.describe Userlist::Push::Resource do
     it 'should convert strings into simple payloads' do
       resource = described_class.from_payload('identifier')
       expect(resource.attributes).to match({ identifier: 'identifier' })
+    end
+
+    context 'when the only option is given' do
+      let(:resource) { described_class.from_payload(attributes, config, only: [:identifier]) }
+
+      it 'should set the specified attributes' do
+        expect(resource.to_hash).to match(identifier: 'object-id')
+      end
+
+      it 'should not set other attributes' do
+        expect(resource.to_hash).to_not match(foo: 'bar')
+      end
+    end
+
+    context 'when the except option is given' do
+      let(:resource) { described_class.from_payload(attributes, config, except: [:foo]) }
+
+      it 'should not set the specified attributes' do
+        expect(resource.to_hash).to_not match(foo: 'bar')
+      end
+
+      it 'should set other attributes' do
+        expect(resource.to_hash).to match(identifier: 'object-id')
+      end
     end
   end
 

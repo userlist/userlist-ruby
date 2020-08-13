@@ -10,10 +10,19 @@ module Userlist
           "/#{resource_name.downcase}s"
         end
 
-        def from_payload(payload, config = Userlist.config)
+        def from_payload(payload, config = Userlist.config, options = {})
           payload = { identifier: payload } if payload.is_a?(String)
 
-          new(payload)
+          keys =
+            if options[:only]
+              Array(options[:only])
+            elsif options[:except]
+              payload.keys - Array(options[:except])
+            else
+              payload.keys
+            end
+
+          new(payload.slice(*keys), config)
         end
       end
 
