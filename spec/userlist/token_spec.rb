@@ -3,7 +3,7 @@ require 'jwt'
 
 RSpec.describe Userlist::Token do
   describe '.generate' do
-    let(:token) { described_class.generate(identifier, config) }
+    let(:token) { described_class.generate(payload, config) }
     let(:config) do
       {
         push_key: push_key,
@@ -11,6 +11,7 @@ RSpec.describe Userlist::Token do
       }
     end
 
+    let(:payload) { identifier }
     let(:identifier) { 'userlist-identifier' }
     let(:push_id) { 'push-id' }
     let(:push_key) { 'push-key' }
@@ -39,9 +40,31 @@ RSpec.describe Userlist::Token do
       end
     end
 
-    it 'should generate a valid JSON web token' do
-      expect { JWT.decode(token, push_key, true, algorithm: 'HS256') }
-        .to_not raise_error
+    context 'when a user is given' do
+      let(:payload) { Userlist::Push::User.from_payload(identifier) }
+
+      it 'should generate a valid JSON web token' do
+        expect { JWT.decode(token, push_key, true, algorithm: 'HS256') }
+          .to_not raise_error
+      end
+    end
+
+    context 'when a user hash is given' do
+      let(:payload) { { identifier: identifier } }
+
+      it 'should generate a valid JSON web token' do
+        expect { JWT.decode(token, push_key, true, algorithm: 'HS256') }
+          .to_not raise_error
+      end
+    end
+
+    context 'when an identifier is given' do
+      let(:payload) { identifier }
+
+      it 'should generate a valid JSON web token' do
+        expect { JWT.decode(token, push_key, true, algorithm: 'HS256') }
+          .to_not raise_error
+      end
     end
   end
 end

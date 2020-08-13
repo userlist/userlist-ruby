@@ -1,11 +1,12 @@
 module Userlist
   class Token
-    def self.generate(identifier, configuration = {})
+    def self.generate(user, configuration = {})
       config = Userlist.config.merge(configuration)
+      user = Userlist::Push::User.from_payload(user, config)
 
       raise Userlist::ConfigurationError, :push_key unless config.push_key
       raise Userlist::ConfigurationError, :push_id unless config.push_id
-      raise Userlist::ArgumentError, 'Missing required identifier' unless identifier
+      raise Userlist::ArgumentError, 'Missing required user or identifier' unless user
 
       now = Time.now.utc.to_i
 
@@ -15,7 +16,7 @@ module Userlist
       }
 
       payload = {
-        sub: identifier,
+        sub: user.identifier,
         exp: now + config.token_lifetime,
         iat: now
       }
