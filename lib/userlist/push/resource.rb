@@ -12,6 +12,7 @@ module Userlist
 
         def from_payload(payload, config = Userlist.config, options = {})
           payload = { identifier: payload } if payload.is_a?(String)
+          payload = payload.to_h
 
           keys =
             if options[:only]
