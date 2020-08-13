@@ -23,7 +23,7 @@ RSpec.describe Userlist::Push::Operations::Create do
     end
 
     it 'should create a new instance of the resource_type' do
-      expect(resource_type).to receive(:new).with(payload).and_return(resource)
+      expect(resource_type).to receive(:new).with(payload, scope.config).and_return(resource)
       relation.create(payload)
     end
 

@@ -10,17 +10,18 @@ module Userlist
           "/#{resource_name.downcase}s"
         end
 
-        def from_payload(payload, _config = Userlist.config)
+        def from_payload(payload, config = Userlist.config)
           payload = { identifier: payload } if payload.is_a?(String)
 
           new(payload)
         end
       end
 
-      attr_reader :attributes
+      attr_reader :attributes, :config
 
-      def initialize(attributes = {})
+      def initialize(attributes = {}, config = Userlist.config)
         @attributes = attributes
+        @config = config
       end
 
       def respond_to_missing?(method, include_private = false)

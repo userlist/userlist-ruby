@@ -53,6 +53,19 @@ RSpec.describe Userlist::Push::Resource do
     end
   end
 
+  describe '#config' do
+    it 'should return the given config' do
+      config = Userlist.config.merge(push_strategy: :null)
+      resource = described_class.new({}, config)
+      expect(resource.config).to eq(config)
+    end
+
+    it 'should return the default config if none was given' do
+      resource = described_class.new({})
+      expect(resource.config).to eq(Userlist.config)
+    end
+  end
+
   describe '#to_hash' do
     it 'should return the resource\'s attributes' do
       expect(subject.to_hash).to eq(

@@ -3,8 +3,8 @@ module Userlist
     module Operations
       module Create
         module ClassMethods
-          def create(payload = {})
-            resource = from_payload(payload)
+          def create(payload = {}, config = self.config)
+            resource = from_payload(payload, config)
             strategy.call(:post, endpoint, resource.attributes)
           end
 

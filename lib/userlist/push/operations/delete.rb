@@ -3,8 +3,8 @@ module Userlist
     module Operations
       module Delete
         module ClassMethods
-          def delete(payload = {})
-            resource = from_payload(payload)
+          def delete(payload = {}, config = self.config)
+            resource = from_payload(payload, config)
             strategy.call(:delete, resource.url)
           end
         end

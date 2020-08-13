@@ -10,10 +10,8 @@ module Userlist
 
       attr_reader :scope, :type
 
-    private
-
-      def from_payload(payload, config = scope.config)
-        type.from_payload(payload, config)
+      def from_payload(payload, config = scope.config, options = {})
+        type.from_payload(payload, config, options)
       end
 
       def endpoint
@@ -22,6 +20,10 @@ module Userlist
 
       def strategy
         scope.strategy
+      end
+
+      def config
+        scope.config
       end
     end
   end
