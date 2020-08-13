@@ -53,6 +53,19 @@ RSpec.describe Userlist::Push::Resource do
     end
   end
 
+  describe '#to_hash' do
+    it 'should return the resource\'s attributes' do
+      expect(subject.to_hash).to eq(
+        identifier: 'object-id',
+        foo: 'bar'
+      )
+    end
+
+    it 'should be aliased as #to_h' do
+      expect(subject.to_hash).to eq(subject.to_h)
+    end
+  end
+
   describe 'additional methods' do
     context 'when there is an corresponding attribute' do
       it 'should return the attribute\'s value' do

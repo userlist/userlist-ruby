@@ -29,6 +29,11 @@ module Userlist
         attributes.key?(attribute.to_sym) || super
       end
 
+      def to_hash
+        attributes
+      end
+      alias to_h to_hash
+
       def url
         "#{self.class.endpoint}/#{identifier}"
       end
