@@ -2,11 +2,12 @@ module Userlist
   class Token
     def self.generate(user, configuration = {})
       config = Userlist.config.merge(configuration)
-      user = Userlist::Push::User.from_payload(user, config)
 
       raise Userlist::ConfigurationError, :push_key unless config.push_key
       raise Userlist::ConfigurationError, :push_id unless config.push_id
       raise Userlist::ArgumentError, 'Missing required user or identifier' unless user
+
+      user = Userlist::Push::User.from_payload(user, config)
 
       now = Time.now.utc.to_i
 
