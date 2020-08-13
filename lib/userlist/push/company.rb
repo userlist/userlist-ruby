@@ -9,6 +9,10 @@ module Userlist
         raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
         raise Userlist::ArgumentError, 'Missing required parameter :identifier' unless attributes[:identifier]
 
+        attributes[:relationships] &&= attributes[:relationships].map do |relationship|
+          Relationship.from_payload(relationship, config, except: [:company])
+        end
+
         super
       end
     end

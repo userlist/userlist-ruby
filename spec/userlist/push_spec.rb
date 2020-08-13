@@ -27,7 +27,7 @@ RSpec.describe Userlist::Push do
       end
     end
 
-    [:users, :events, :companies].each do |method|
+    [:users, :events, :companies, :relationships].each do |method|
       describe ".#{method}" do
         it 'should forward the method call to the default push instance' do
           expect(push_instance).to receive(method)
@@ -68,6 +68,19 @@ RSpec.describe Userlist::Push do
 
     it 'should support the delete operation' do
       expect(relation).to be_kind_of(Userlist::Push::Operations::Delete::ClassMethods)
+    end
+  end
+
+  describe '#relationships' do
+    let(:relation) { subject.relationships }
+
+    it 'should return a relation' do
+      expect(relation).to be_an_instance_of(Userlist::Push::Relation)
+      expect(relation.type).to eq(Userlist::Push::Relationship)
+    end
+
+    it 'should support the create operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
     end
   end
 
