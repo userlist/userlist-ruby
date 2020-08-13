@@ -29,6 +29,10 @@ module Userlist
         attributes.key?(attribute.to_sym) || super
       end
 
+      def url
+        "#{self.class.endpoint}/#{identifier}"
+      end
+
     private
 
       def method_missing(method, *args, &block)

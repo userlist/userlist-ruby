@@ -5,7 +5,7 @@ module Userlist
         module ClassMethods
           def delete(payload = {})
             resource = from_payload(payload)
-            strategy.call(:delete, "#{endpoint}/#{resource.identifier}")
+            strategy.call(:delete, resource.url)
           end
         end
 

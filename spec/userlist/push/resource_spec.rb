@@ -47,6 +47,12 @@ RSpec.describe Userlist::Push::Resource do
     end
   end
 
+  describe '#url' do
+    it 'should combine the endpoint and the identifier' do
+      expect(subject.url).to eq('/objects/object-id')
+    end
+  end
+
   describe 'additional methods' do
     context 'when there is an corresponding attribute' do
       it 'should return the attribute\'s value' do
