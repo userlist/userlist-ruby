@@ -5,6 +5,12 @@ module Userlist
         '/companies'
       end
 
+      def self.defaults
+        {
+          relationships: []
+        }
+      end
+
       def initialize(attributes = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
         raise Userlist::ArgumentError, 'Missing required parameter :identifier' unless attributes[:identifier]

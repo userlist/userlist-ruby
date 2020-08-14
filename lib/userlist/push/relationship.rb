@@ -1,6 +1,14 @@
 module Userlist
   class Push
     class Relationship < Resource
+      def self.defaults
+        {
+          name: nil,
+          user: nil,
+          company: nil
+        }
+      end
+
       def initialize(attributes = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
         raise Userlist::ArgumentError, 'Missing required parameter :user or :company' unless attributes[:user] || attributes[:company]

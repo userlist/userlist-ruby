@@ -25,12 +25,16 @@ module Userlist
 
           new(payload.slice(*keys), config)
         end
+
+        def defaults
+          {}
+        end
       end
 
       attr_reader :attributes, :config
 
       def initialize(attributes = {}, config = Userlist.config)
-        @attributes = attributes
+        @attributes = self.class.defaults.merge(attributes)
         @config = config
       end
 

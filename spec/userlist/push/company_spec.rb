@@ -63,7 +63,7 @@ RSpec.describe Userlist::Push::Company do
     end
 
     it 'should exclude the relationships\' company' do
-      expect { subject.relationships.map(&:company) }.to raise_error(NoMethodError)
+      expect(subject.relationships.map(&:company)).to eq([nil, nil])
     end
   end
 end

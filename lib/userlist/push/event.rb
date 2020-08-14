@@ -1,6 +1,13 @@
 module Userlist
   class Push
     class Event < Resource
+      def self.defaults
+        {
+          user: nil,
+          company: nil
+        }
+      end
+
       def initialize(attributes = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
         raise Userlist::ArgumentError, 'Missing required parameter :name' unless attributes[:name]

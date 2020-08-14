@@ -49,7 +49,7 @@ RSpec.describe Userlist::Push::Relationship do
     end
 
     it 'should exclude the user\'s relationships' do
-      expect { subject.relationships }.to raise_error(NoMethodError)
+      expect(subject.user.relationships).to be_empty
     end
   end
 
@@ -77,7 +77,7 @@ RSpec.describe Userlist::Push::Relationship do
     end
 
     it 'should exclude the company\'s relationships' do
-      expect { subject.relationships }.to raise_error(NoMethodError)
+      expect(subject.company.relationships).to be_empty
     end
   end
 
