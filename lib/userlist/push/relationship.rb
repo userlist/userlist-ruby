@@ -10,6 +10,13 @@ module Userlist
 
         super
       end
+
+      def url
+        raise Userlist::Error, "Cannot generate url for #{self.class.name} without a user" unless user
+        raise Userlist::Error, "Cannot generate url for #{self.class.name} without a company" unless company
+
+        "#{self.class.endpoint}/#{user.identifier}/#{company.identifier}"
+      end
     end
   end
 end

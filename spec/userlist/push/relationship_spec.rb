@@ -12,6 +12,8 @@ RSpec.describe Userlist::Push::Relationship do
     }
   end
 
+  subject { described_class.new(payload) }
+
   it 'should raise an error when no payload is given' do
     expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /attributes/)
   end
@@ -76,6 +78,28 @@ RSpec.describe Userlist::Push::Relationship do
 
     it 'should exclude the company\'s relationships' do
       expect { subject.relationships }.to raise_error(NoMethodError)
+    end
+  end
+
+  describe '#url' do
+    it 'should combine the endpoint, the user identifier, and the company identifier' do
+      expect(subject.url).to eq('/relationships/user-identifier/company-identifier')
+    end
+
+    context 'when no user is given' do
+      let(:payload) { super().merge(user: nil) }
+
+      it 'should raise an error message' do
+        expect { subject.url }.to raise_error(Userlist::Error, /user/)
+      end
+    end
+
+    context 'when no company is given' do
+      let(:payload) { super().merge(company: nil) }
+
+      it 'should raise an error message' do
+        expect { subject.url }.to raise_error(Userlist::Error, /company/)
+      end
     end
   end
 end

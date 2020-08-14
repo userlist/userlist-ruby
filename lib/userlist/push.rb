@@ -46,7 +46,7 @@ module Userlist
     end
 
     def relationships
-      @relationships ||= Relation.new(self, Relationship, [Operations::Create])
+      @relationships ||= Relation.new(self, Relationship, [Operations::Create, Operations::Delete])
     end
 
     def event(payload = {})
