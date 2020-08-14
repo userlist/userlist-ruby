@@ -5,8 +5,8 @@ module Userlist
         raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
         raise Userlist::ArgumentError, 'Missing required parameter :user or :company' unless attributes[:user] || attributes[:company]
 
-        attributes[:user] &&= Userlist::Push::User.from_payload(attributes[:user], config, except: [:relationsihps])
-        attributes[:company] &&= Userlist::Push::Company.from_payload(attributes[:company], config, except: [:relationsihps])
+        attributes[:user] &&= Userlist::Push::User.from_payload(attributes[:user], config, except: [:relationships])
+        attributes[:company] &&= Userlist::Push::Company.from_payload(attributes[:company], config, except: [:relationships])
 
         super
       end
