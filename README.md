@@ -1,8 +1,8 @@
-# Userlist for Ruby [![Build Status](https://travis-ci.com/userlistio/userlist-ruby.svg?branch=master)](https://travis-ci.com/userlistio/userlist-ruby)
+# Userlist for Ruby [![Build Status](https://travis-ci.com/userlist/userlist-ruby.svg?branch=master)](https://travis-ci.com/userlist/userlist-ruby)
 
 This gem helps with integrating [Userlist](http://userlist.com) into Ruby applications.
 
-> To integrate Userlist into Ruby on Rails application, please use [userlist-rails](https://github.com/userlistio/userlist-rails)
+> To integrate Userlist into Ruby on Rails application, please use [userlist-rails](https://github.com/userlist/userlist-rails)
 
 ## Installation
 
@@ -117,7 +117,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at <https://github.com/userlistio/userlist>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/userlist/userlist>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -125,7 +125,7 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Code of Conduct
 
-Everyone interacting in the Userlist project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/userlistio/userlist/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Userlist project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/userlist/userlist/blob/master/CODE_OF_CONDUCT.md).
 
 ## What is Userlist?
 
