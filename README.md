@@ -1,4 +1,4 @@
-# Userlist for Ruby [![Build Status](https://travis-ci.com/userlist/userlist-ruby.svg?branch=master)](https://travis-ci.com/userlist/userlist-ruby)
+# Userlist for Ruby  [![Build Status](https://github.com/userlist/userlist-ruby/workflows/Tests/badge.svg)](https://github.com/userlist/userlist-ruby)
 
 This gem helps with integrating [Userlist](http://userlist.com) into Ruby applications.
 
