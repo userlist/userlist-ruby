@@ -10,8 +10,8 @@ module Userlist
 
       attr_reader :scope, :type
 
-      def from_payload(payload, config = self.config, options = {})
-        type.from_payload(payload, config, options)
+      def from_payload(payload, config = self.config)
+        type.from_payload(payload, config)
       end
 
       def endpoint

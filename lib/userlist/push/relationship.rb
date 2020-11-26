@@ -1,20 +1,12 @@
 module Userlist
   class Push
     class Relationship < Resource
-      def self.defaults
-        {
-          name: nil,
-          user: nil,
-          company: nil
-        }
-      end
+      has_one :user, type: 'Userlist::Push::User'
+      has_one :company, type: 'Userlist::Push::Company'
 
-      def initialize(attributes = {}, config = Userlist.config)
-        raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
-        raise Userlist::ArgumentError, 'Missing required parameter :user or :company' unless attributes[:user] || attributes[:company]
-
-        attributes[:user] &&= Userlist::Push::User.from_payload(attributes[:user], config, except: [:relationships])
-        attributes[:company] &&= Userlist::Push::Company.from_payload(attributes[:company], config, except: [:relationships])
+      def initialize(payload = {}, config = Userlist.config)
+        raise Userlist::ArgumentError, 'Missing required payload' unless payload
+        raise Userlist::ArgumentError, 'Missing required parameter :user or :company' unless payload[:user] || payload[:company]
 
         super
       end

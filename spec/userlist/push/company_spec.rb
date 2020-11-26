@@ -11,7 +11,7 @@ RSpec.describe Userlist::Push::Company do
   end
 
   it 'should raise an error when no payload is given' do
-    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /attributes/)
+    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
   end
 
   it 'should raise an error when no identifier is given' do
@@ -60,10 +60,6 @@ RSpec.describe Userlist::Push::Company do
           { role: 'user' }
         ]
       )
-    end
-
-    it 'should exclude the relationships\' company' do
-      expect(subject.relationships.map(&:company)).to eq([nil, nil])
     end
   end
 end

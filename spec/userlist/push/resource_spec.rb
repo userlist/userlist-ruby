@@ -9,7 +9,7 @@ RSpec.describe Userlist::Push::Resource do
     end
   end
 
-  let(:attributes) do
+  let(:payload) do
     {
       identifier: 'object-id',
       foo: 'bar'
@@ -18,7 +18,7 @@ RSpec.describe Userlist::Push::Resource do
 
   let(:config) { Userlist.config }
 
-  subject { dummy_resource.new(attributes) }
+  subject { dummy_resource.new(payload) }
 
   describe '.resource_name' do
     it 'should drop the namespace' do
@@ -34,42 +34,18 @@ RSpec.describe Userlist::Push::Resource do
 
   describe '.from_payload' do
     it 'should create a new instance of the resource' do
-      resource = described_class.from_payload(attributes)
+      resource = described_class.from_payload(payload)
       expect(resource).to be_kind_of(described_class)
     end
 
-    it 'should set the given attributes' do
-      resource = described_class.from_payload(attributes)
-      expect(resource.attributes).to match(attributes)
+    it 'should set the given payload' do
+      resource = described_class.from_payload(payload)
+      expect(resource.payload).to match(payload)
     end
 
     it 'should convert strings into simple payloads' do
       resource = described_class.from_payload('identifier')
-      expect(resource.attributes).to match({ identifier: 'identifier' })
-    end
-
-    context 'when the only option is given' do
-      let(:resource) { described_class.from_payload(attributes, config, only: [:identifier]) }
-
-      it 'should set the specified attributes' do
-        expect(resource.to_hash).to match(identifier: 'object-id')
-      end
-
-      it 'should not set other attributes' do
-        expect(resource.to_hash).to_not match(foo: 'bar')
-      end
-    end
-
-    context 'when the except option is given' do
-      let(:resource) { described_class.from_payload(attributes, config, except: [:foo]) }
-
-      it 'should not set the specified attributes' do
-        expect(resource.to_hash).to_not match(foo: 'bar')
-      end
-
-      it 'should set other attributes' do
-        expect(resource.to_hash).to match(identifier: 'object-id')
-      end
+      expect(resource.payload).to match({ identifier: 'identifier' })
     end
   end
 
@@ -93,7 +69,7 @@ RSpec.describe Userlist::Push::Resource do
   end
 
   describe '#to_hash' do
-    it 'should return the resource\'s attributes' do
+    it 'should return the resource\'s payload' do
       expect(subject.to_hash).to eq(
         identifier: 'object-id',
         foo: 'bar'

@@ -5,19 +5,13 @@ module Userlist
         '/companies'
       end
 
-      def self.defaults
-        {
-          relationships: []
-        }
-      end
+      has_many :relationships, type: 'Userlist::Push::Relationship'
+      has_many :users, type: 'Userlist::Push::User'
+      has_one  :user, type: 'Userlist::Push::User'
 
-      def initialize(attributes = {}, config = Userlist.config)
-        raise Userlist::ArgumentError, 'Missing required attributes hash' unless attributes
-        raise Userlist::ArgumentError, 'Missing required parameter :identifier' unless attributes[:identifier]
-
-        attributes[:relationships] &&= attributes[:relationships].map do |relationship|
-          Relationship.from_payload(relationship, config, except: [:company])
-        end
+      def initialize(payload = {}, config = Userlist.config)
+        raise Userlist::ArgumentError, 'Missing required payload hash' unless payload
+        raise Userlist::ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
 
         super
       end

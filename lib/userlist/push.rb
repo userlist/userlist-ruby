@@ -2,6 +2,7 @@ require 'userlist/push/client'
 require 'userlist/push/strategies'
 
 require 'userlist/push/resource'
+require 'userlist/push/resource_collection'
 require 'userlist/push/relation'
 
 require 'userlist/push/operations/create'
@@ -11,6 +12,8 @@ require 'userlist/push/user'
 require 'userlist/push/company'
 require 'userlist/push/relationship'
 require 'userlist/push/event'
+
+require 'userlist/push/serializer'
 
 module Userlist
   class Push

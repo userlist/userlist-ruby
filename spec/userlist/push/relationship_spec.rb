@@ -15,7 +15,7 @@ RSpec.describe Userlist::Push::Relationship do
   subject { described_class.new(payload) }
 
   it 'should raise an error when no payload is given' do
-    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /attributes/)
+    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
   end
 
   it 'should raise an error when no user or company is given' do
@@ -47,10 +47,6 @@ RSpec.describe Userlist::Push::Relationship do
     it 'should include the user\'s properties' do
       expect(subject.user.email).to eq('foo@example.com')
     end
-
-    it 'should exclude the user\'s relationships' do
-      expect(subject.user.relationships).to be_empty
-    end
   end
 
   context 'when a company hash is given' do
@@ -74,10 +70,6 @@ RSpec.describe Userlist::Push::Relationship do
 
     it 'should include the company\'s properties' do
       expect(subject.company.name).to eq('Foo, Inc.')
-    end
-
-    it 'should exclude the company\'s relationships' do
-      expect(subject.company.relationships).to be_empty
     end
   end
 
