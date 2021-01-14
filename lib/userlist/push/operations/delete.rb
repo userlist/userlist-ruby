@@ -6,12 +6,16 @@ module Userlist
           def delete(payload = {}, config = self.config)
             return false unless resource = from_payload(payload, config)
 
-            strategy.call(:delete, resource.url)
+            strategy.call(:delete, resource.url) if resource.delete?
           end
         end
 
-        def included(base)
+        def self.included(base)
           base.extend(ClassMethods)
+        end
+
+        def delete?
+          true
         end
       end
     end

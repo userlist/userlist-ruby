@@ -6,14 +6,18 @@ module Userlist
           def create(payload = {}, config = self.config)
             return false unless resource = from_payload(payload, config)
 
-            strategy.call(:post, endpoint, resource)
+            strategy.call(:post, endpoint, resource) if resource.create?
           end
 
           alias push create
         end
 
-        def included(base)
+        def self.included(base)
           base.extend(ClassMethods)
+        end
+
+        def create?
+          true
         end
       end
     end
