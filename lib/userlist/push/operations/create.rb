@@ -5,7 +5,7 @@ module Userlist
         module ClassMethods
           def create(payload = {}, config = self.config)
             resource = from_payload(payload, config)
-            strategy.call(:post, endpoint, resource.payload)
+            strategy.call(:post, endpoint, resource)
           end
 
           alias push create

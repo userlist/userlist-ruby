@@ -84,6 +84,14 @@ module Userlist
         self.class.hash & payload.hash
       end
 
+      def eql?(other)
+        self.hash == other.hash
+      end
+
+      def ==(other)
+        self.hash == other.hash
+      end
+
       def attribute_names
         payload.keys.map(&:to_sym) - relationship_names
       end

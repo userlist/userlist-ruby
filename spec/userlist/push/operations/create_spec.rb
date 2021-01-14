@@ -33,7 +33,7 @@ RSpec.describe Userlist::Push::Operations::Create do
 
     context 'when given a payload hash' do
       it 'should send the payload to the endpoint' do
-        expect(strategy).to receive(:call).with(:post, '/users', hash_including(payload))
+        expect(strategy).to receive(:call).with(:post, '/users', resource)
         relation.create(payload)
       end
     end
@@ -44,7 +44,7 @@ RSpec.describe Userlist::Push::Operations::Create do
       end
 
       it 'should send a simple payload to the endpoint' do
-        expect(strategy).to receive(:call).with(:post, '/users', hash_including(payload))
+        expect(strategy).to receive(:call).with(:post, '/users', resource)
         relation.create(payload[:identifier])
       end
     end
