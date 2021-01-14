@@ -26,5 +26,14 @@ RSpec.describe Userlist::Push::Operations::Delete do
         relation.delete(payload)
       end
     end
+
+    context 'when given nil' do
+      let(:payload) { nil }
+
+      it 'should not send a payload to the endpoint' do
+        expect(strategy).to_not receive(:call)
+        relation.delete(payload)
+      end
+    end
   end
 end

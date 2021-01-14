@@ -48,5 +48,14 @@ RSpec.describe Userlist::Push::Operations::Create do
         relation.create(payload[:identifier])
       end
     end
+
+    context 'when given nil' do
+      let(:payload) { nil }
+
+      it 'should not send a payload to the endpoint' do
+        expect(strategy).to_not receive(:call)
+        relation.create(payload)
+      end
+    end
   end
 end

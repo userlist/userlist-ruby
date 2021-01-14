@@ -4,7 +4,8 @@ module Userlist
       module Delete
         module ClassMethods
           def delete(payload = {}, config = self.config)
-            resource = from_payload(payload, config)
+            return false unless resource = from_payload(payload, config)
+
             strategy.call(:delete, resource.url)
           end
         end

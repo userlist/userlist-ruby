@@ -4,7 +4,8 @@ module Userlist
       module Create
         module ClassMethods
           def create(payload = {}, config = self.config)
-            resource = from_payload(payload, config)
+            return false unless resource = from_payload(payload, config)
+
             strategy.call(:post, endpoint, resource)
           end
 
