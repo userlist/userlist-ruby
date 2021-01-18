@@ -67,9 +67,10 @@ module Userlist
       def to_hash
         Serializer.serialize(self)
       end
+      alias to_h to_hash
 
-      def to_h
-        to_hash
+      def to_json(*args)
+        to_hash.to_json(*args)
       end
 
       def url
