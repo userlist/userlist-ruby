@@ -22,7 +22,7 @@ module Userlist
       end
 
       def push?
-        user.push? && company.push?
+        user&.push? && company&.push?
       end
     end
   end
