@@ -20,6 +20,10 @@ module Userlist
 
         "#{self.class.endpoint}/#{user.identifier}/#{company.identifier}"
       end
+
+      def push?
+        user.push? && company.push?
+      end
     end
   end
 end

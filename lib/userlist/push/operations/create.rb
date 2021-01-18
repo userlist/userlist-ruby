@@ -17,7 +17,7 @@ module Userlist
         end
 
         def create?
-          true
+          push?
         end
       end
     end

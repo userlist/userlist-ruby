@@ -101,6 +101,10 @@ module Userlist
         self.class.relationship_names.to_a
       end
 
+      def push?
+        true
+      end
+
     private
 
       def method_missing(method, *args, &block)

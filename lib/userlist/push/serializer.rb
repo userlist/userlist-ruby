@@ -16,6 +16,8 @@ module Userlist
         return resource.identifier if serialized_resources.include?(resource)
         serialized_resources << resource
 
+        return unless resource.push?
+
         serialized = {}
 
         resource.attribute_names.each do |name|

@@ -17,6 +17,10 @@ module Userlist
       def occured_at
         payload[:occured_at] || Time.now
       end
+
+      def push?
+        (user.nil? || user.push?) && (company.nil? || company.push?)
+      end
     end
   end
 end
