@@ -14,7 +14,7 @@ module Userlist
           return payload if payload.nil?
           return payload if payload.is_a?(self)
 
-          payload = { identifier: payload } if payload.is_a?(String)
+          payload = { identifier: payload } if payload.is_a?(String) || payload.is_a?(Numeric)
 
           new(payload, config)
         end

@@ -47,6 +47,11 @@ RSpec.describe Userlist::Push::Resource do
       resource = described_class.from_payload('identifier')
       expect(resource.payload).to match({ identifier: 'identifier' })
     end
+
+    it 'should convert numbers into simple payloads' do
+      resource = described_class.from_payload(1)
+      expect(resource.payload).to match({ identifier: 1 })
+    end
   end
 
   describe '#url' do
