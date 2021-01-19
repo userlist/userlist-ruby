@@ -3,16 +3,21 @@ module Userlist
     module Operations
       module Create
         module ClassMethods
-          def create(payload = {})
-            resource = from_payload(payload)
-            strategy.call(:post, endpoint, resource.attributes)
+          def create(payload = {}, config = self.config)
+            return false unless resource = from_payload(payload, config)
+
+            strategy.call(:post, endpoint, resource) if resource.create?
           end
 
           alias push create
         end
 
-        def included(base)
+        def self.included(base)
           base.extend(ClassMethods)
+        end
+
+        def create?
+          push?
         end
       end
     end

@@ -53,7 +53,7 @@ module Userlist
         request['Accept'] = 'application/json'
         request['Authorization'] = "Push #{token}"
         request['Content-Type'] = 'application/json; charset=UTF-8'
-        request.body = JSON.dump(payload) if payload
+        request.body = JSON.generate(payload) if payload
 
         logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
 

@@ -3,14 +3,19 @@ module Userlist
     module Operations
       module Delete
         module ClassMethods
-          def delete(payload = {})
-            resource = from_payload(payload)
-            strategy.call(:delete, "#{endpoint}/#{resource.identifier}")
+          def delete(payload = {}, config = self.config)
+            return false unless resource = from_payload(payload, config)
+
+            strategy.call(:delete, resource.url) if resource.delete?
           end
         end
 
-        def included(base)
+        def self.included(base)
           base.extend(ClassMethods)
+        end
+
+        def delete?
+          true
         end
       end
     end

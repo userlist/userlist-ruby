@@ -1,8 +1,8 @@
 # Userlist for Ruby  [![Build Status](https://github.com/userlist/userlist-ruby/workflows/Tests/badge.svg)](https://github.com/userlist/userlist-ruby)
 
-This gem helps with integrating [Userlist](http://userlist.com) into Ruby applications.
+This gem helps with integrating [Userlist](https://userlist.com) into Ruby applications.
 
-> To integrate Userlist into Ruby on Rails application, please use [userlist-rails](https://github.com/userlist/userlist-rails)
+> To integrate Userlist into a Ruby on Rails application, please use [userlist-rails](https://github.com/userlist/userlist-rails)
 
 ## Installation
 
@@ -24,7 +24,7 @@ Or install it yourself as:
 
 The only required configuration is the Push API key. You can get your Push API key via the [Push API settings](https://app.userlist.com/settings/push) in your Userlist account.
 
-Configuration values can either be set via the `Userlist.configure` method or as environment variables. The environment take precedence over configuration values from the initializer.
+Configuration values can either be set via the `Userlist.configure` method or as environment variables. The environment variables take precedence over configuration values from the initializer.
 
 Configuration via environment variables:
 
@@ -65,6 +65,8 @@ end
 
 ## Usage
 
+This library is a wrapper for Userlist's Push API. For details about the accepted payloads, please check [its documentation](https://userlist.com/docs/getting-started/integration-guide/).
+
 ### Tracking Users
 
 To manually send user data into Userlist, use the `Userlist::Push.users.push` method.
@@ -77,13 +79,79 @@ Userlist::Push.users.push(
     first_name: 'Foo',
     last_name: 'Example'
   }
-})
+)
 ```
 
 It's also possible to delete a user from Userlist, using the `Userlist::Push.users.delete` method.
 
 ```ruby
 Userlist::Push.users.delete('user-1')
+```
+
+### Tracking Companies
+
+To manually send company data into Userlist, use the `Userlist::Push.companies.push` method.
+
+```ruby
+Userlist::Push.companies.push(
+  identifier: 'company-1',
+  email: 'Example, Inc.',
+  properties: {
+    industry: 'Software Testing'
+  }
+)
+```
+
+It's also possible to delete a user from Userlist, using the `Userlist::Push.companies.delete` method.
+
+```ruby
+Userlist::Push.companies.delete('user-1')
+```
+
+### Tracking Relationships
+
+Tracking relationships can either be done using nested properties in user or company payloads or via the `Userlist::Push.relationships.push` method.
+
+```ruby
+Userlist::Push.relationships.push(
+  user: 'user-1',
+  company: 'company-1',
+  properties: {
+    role: 'owner'
+  }
+})
+```
+
+This is equivalent to specifying the relationship on the user model.
+
+```ruby
+Userlist::Push.users.push(
+  identifier: 'user-1',
+  relationships: [
+    {
+      company: 'company-1',
+      properties: {
+        role: 'owner'
+      }
+    }
+  ]
+})
+```
+
+It's also equivalent specifying the relationship on the company model.
+
+```ruby
+Userlist::Push.companies.push(
+  identifier: 'company-1',
+  relationships: [
+    {
+      user: 'user-1',
+      properties: {
+        role: 'owner'
+      }
+    }
+  ]
+})
 ```
 
 ### Tracking Events
@@ -94,6 +162,23 @@ To track custom events use the `Userlist::Push.events.push` method.
 Userlist::Push.events.push(
   name: 'project_created',
   user: 'user-1',
+  properties: {
+    project_name: 'Example project'
+  }
+)
+```
+
+Instead of just sending a user or company identifier, it's also possible to expand the properties into objects. This will update the user / company record as well as trigger the event in one operation.
+
+```ruby
+Userlist::Push.events.push(
+  name: 'project_created',
+  user: {
+    identifier: 'user-1',
+    properties: {
+      projects: 5
+    }
+  },
   properties: {
     project_name: 'Example project'
   }

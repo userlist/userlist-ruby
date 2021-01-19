@@ -23,7 +23,7 @@ RSpec.describe Userlist::Push::Operations::Create do
     end
 
     it 'should create a new instance of the resource_type' do
-      expect(resource_type).to receive(:new).with(payload).and_return(resource)
+      expect(resource_type).to receive(:new).with(payload, scope.config).and_return(resource)
       relation.create(payload)
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Userlist::Push::Operations::Create do
 
     context 'when given a payload hash' do
       it 'should send the payload to the endpoint' do
-        expect(strategy).to receive(:call).with(:post, '/users', payload)
+        expect(strategy).to receive(:call).with(:post, '/users', resource)
         relation.create(payload)
       end
     end
@@ -44,8 +44,17 @@ RSpec.describe Userlist::Push::Operations::Create do
       end
 
       it 'should send a simple payload to the endpoint' do
-        expect(strategy).to receive(:call).with(:post, '/users', payload)
+        expect(strategy).to receive(:call).with(:post, '/users', resource)
         relation.create(payload[:identifier])
+      end
+    end
+
+    context 'when given nil' do
+      let(:payload) { nil }
+
+      it 'should not send a payload to the endpoint' do
+        expect(strategy).to_not receive(:call)
+        relation.create(payload)
       end
     end
   end
