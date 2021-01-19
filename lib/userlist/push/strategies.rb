@@ -12,7 +12,7 @@ module Userlist
         return strategy unless strategy.is_a?(Symbol) || strategy.is_a?(String)
 
         name = strategy.to_s.capitalize
-        require("userlist/push/strategies/#{name}") unless const_defined?(name, false)
+        require("userlist/push/strategies/#{strategy}") unless const_defined?(name, false)
         const_get(name, false)
       end
     end
