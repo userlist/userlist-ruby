@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'userlist/push/strategies/direct'
+
 RSpec.describe Userlist::Push::Strategies::Direct do
   subject { described_class.new }
 

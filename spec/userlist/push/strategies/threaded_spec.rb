@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'userlist/push/strategies/threaded'
+
 RSpec.describe Userlist::Push::Strategies::Threaded do
   subject { described_class.new(config) }
 
