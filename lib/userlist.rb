@@ -8,16 +8,16 @@ require 'userlist/token'
 
 module Userlist
   class Error < StandardError; end
+
   class ArgumentError < Error; end
+
   class ConfigurationError < Error
     attr_reader :key
 
     def initialize(key)
       @key = key.to_sym
-    end
 
-    def message
-      <<~MESSAGE
+      super <<~MESSAGE
         Missing required configuration value for `#{key}`
 
         Please set a value for `#{key}` using an environment variable:
@@ -40,7 +40,7 @@ module Userlist
 
     def logger
       @logger ||= begin
-        logger = Logger.new(STDOUT)
+        logger = Logger.new($stdout)
         logger.progname = 'userlist'
         logger.level = Logger.const_get(config.log_level.to_s.upcase)
         logger

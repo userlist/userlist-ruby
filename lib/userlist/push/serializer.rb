@@ -14,6 +14,7 @@ module Userlist
 
       def serialize_resource(resource)
         return resource.identifier if serialized_resources.include?(resource)
+
         serialized_resources << resource
 
         return unless resource.push?

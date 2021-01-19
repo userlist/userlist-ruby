@@ -22,7 +22,7 @@ RSpec.describe Userlist::Push::Serializer do
       user: user,
       company: company,
       properties: {
-        role: 'admin',
+        role: 'admin'
       }
     )
   end
@@ -88,7 +88,7 @@ RSpec.describe Userlist::Push::Serializer do
               user: {
                 identifier: 'user-identifier',
                 email: 'foo@example.com',
-                signed_up_at: nil,
+                signed_up_at: nil
               },
               properties: {
                 role: 'admin'
@@ -107,12 +107,12 @@ RSpec.describe Userlist::Push::Serializer do
           user: {
             identifier: 'user-identifier',
             email: 'foo@example.com',
-            signed_up_at: nil,
+            signed_up_at: nil
           },
           company: {
             identifier: 'company-identifier',
             name: 'Example, Inc.',
-            signed_up_at: nil,
+            signed_up_at: nil
           },
           properties: {
             role: 'admin'
@@ -138,7 +138,7 @@ RSpec.describe Userlist::Push::Serializer do
                 company: {
                   identifier: 'company-identifier',
                   name: 'Example, Inc.',
-                  signed_up_at: nil,
+                  signed_up_at: nil
                 },
                 properties: {
                   role: 'admin'

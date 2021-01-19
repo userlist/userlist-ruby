@@ -25,7 +25,7 @@ module Userlist
 
       protected
 
-        def has_one(name, type:)
+        def has_one(name, type:) # rubocop:disable Naming/PredicateName
           relationship_names << name.to_sym
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
@@ -35,7 +35,7 @@ module Userlist
           RUBY
         end
 
-        def has_many(name, type:)
+        def has_many(name, type:) # rubocop:disable Naming/PredicateName
           relationship_names << name.to_sym
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
@@ -86,12 +86,9 @@ module Userlist
       end
 
       def eql?(other)
-        self.hash == other.hash
+        hash == other.hash
       end
-
-      def ==(other)
-        self.hash == other.hash
-      end
+      alias == eql?
 
       def attribute_names
         payload.keys.map(&:to_sym) - relationship_names
