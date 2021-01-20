@@ -26,7 +26,10 @@ module Userlist
         attr_reader :config
 
         def options
-          @options ||= options.each_with_object(config.push_strategy_options || {}) { |(k, v), h| h[k.to_s] = v }
+          @options ||= begin
+            options = config.push_strategy_options || {}
+            options.each_with_object({}) { |(k, v), h| h[k.to_s] = v }
+          end
         end
 
         def default_options
