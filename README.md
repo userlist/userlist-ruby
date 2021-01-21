@@ -120,7 +120,7 @@ Userlist::Push.relationships.push(
   properties: {
     role: 'owner'
   }
-})
+)
 ```
 
 This is equivalent to specifying the relationship on the user model.
@@ -136,7 +136,7 @@ Userlist::Push.users.push(
       }
     }
   ]
-})
+)
 ```
 
 It's also equivalent specifying the relationship on the company model.
@@ -152,7 +152,7 @@ Userlist::Push.companies.push(
       }
     }
   ]
-})
+)
 ```
 
 ### Tracking Events
