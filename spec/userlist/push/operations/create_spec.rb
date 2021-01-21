@@ -57,5 +57,26 @@ RSpec.describe Userlist::Push::Operations::Create do
         relation.create(payload)
       end
     end
+
+    context 'when the operation is not permitted' do
+      before do
+        allow_any_instance_of(resource_type).to receive(:create?).and_return(false)
+      end
+
+      it 'should not send a payload to the endpoint' do
+        expect(strategy).to_not receive(:call)
+        relation.create(payload)
+      end
+    end
+
+    context 'when push ist not permitted' do
+      before do
+        allow_any_instance_of(resource_type).to receive(:push?).and_return(false)
+      end
+
+      it 'should not allow the operation' do
+        expect(resource.create?).to be(false)
+      end
+    end
   end
 end

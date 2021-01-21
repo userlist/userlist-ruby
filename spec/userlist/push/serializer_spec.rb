@@ -42,8 +42,8 @@ RSpec.describe Userlist::Push::Serializer do
   end
 
   before do
-    user.relationships = [relationship]
-    company.relationships = [relationship]
+    user&.relationships = [relationship]
+    company&.relationships = [relationship]
   end
 
   describe '#serialize' do
@@ -72,6 +72,30 @@ RSpec.describe Userlist::Push::Serializer do
           ]
         )
       end
+
+      context 'when serializing the user is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::User).to receive(:push?).and_return(false)
+        end
+
+        it 'should return no payload' do
+          expect(payload).to_not be
+        end
+      end
+
+      context 'when serializing the company is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::Company).to receive(:push?).and_return(false)
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            identifier: 'user-identifier',
+            email: 'foo@example.com',
+            signed_up_at: nil
+          )
+        end
+      end
     end
 
     context 'when serializing the company' do
@@ -97,6 +121,30 @@ RSpec.describe Userlist::Push::Serializer do
           ]
         )
       end
+
+      context 'when serializing the user is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::User).to receive(:push?).and_return(false)
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            identifier: 'company-identifier',
+            name: 'Example, Inc.',
+            signed_up_at: nil
+          )
+        end
+      end
+
+      context 'when serializing the company is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::Company).to receive(:push?).and_return(false)
+        end
+
+        it 'should return no payload' do
+          expect(payload).to_not be
+        end
+      end
     end
 
     context 'when serializing the relationship' do
@@ -118,6 +166,26 @@ RSpec.describe Userlist::Push::Serializer do
             role: 'admin'
           }
         )
+      end
+
+      context 'when serializing the user is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::User).to receive(:push?).and_return(false)
+        end
+
+        it 'should return no payload' do
+          expect(payload).to_not be
+        end
+      end
+
+      context 'when serializing the company is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::Company).to receive(:push?).and_return(false)
+        end
+
+        it 'should return no payload' do
+          expect(payload).to_not be
+        end
       end
     end
 
@@ -153,6 +221,68 @@ RSpec.describe Userlist::Push::Serializer do
             value: 'foo'
           }
         )
+      end
+
+      context 'when serializing the user is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::User).to receive(:push?).and_return(false)
+        end
+
+        it 'should return no payload' do
+          expect(payload).to_not be
+        end
+
+        context 'when there is no user' do
+          let(:user) { nil }
+
+          it 'should return the correct payload' do
+            expect(payload).to eq(
+              name: 'example_event',
+              occured_at: event.occured_at,
+              company: {
+                identifier: 'company-identifier',
+                name: 'Example, Inc.',
+                signed_up_at: nil
+              },
+              properties: {
+                null: nil,
+                empty: [],
+                value: 'foo'
+              }
+            )
+          end
+        end
+      end
+
+      context 'when serializing the company is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::Company).to receive(:push?).and_return(false)
+        end
+
+        it 'should return no payload' do
+          expect(payload).to_not be
+        end
+
+        context 'when there is no company' do
+          let(:company) { nil }
+
+          it 'should return the correct payload' do
+            expect(payload).to eq(
+              name: 'example_event',
+              occured_at: event.occured_at,
+              user: {
+                identifier: 'user-identifier',
+                email: 'foo@example.com',
+                signed_up_at: nil
+              },
+              properties: {
+                null: nil,
+                empty: [],
+                value: 'foo'
+              }
+            )
+          end
+        end
       end
     end
   end

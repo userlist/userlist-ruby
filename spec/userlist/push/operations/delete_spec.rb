@@ -35,5 +35,16 @@ RSpec.describe Userlist::Push::Operations::Delete do
         relation.delete(payload)
       end
     end
+
+    context 'when the operation is not permitted' do
+      before do
+        allow_any_instance_of(resource_type).to receive(:delete?).and_return(false)
+      end
+
+      it 'should not send a payload to the endpoint' do
+        expect(strategy).to_not receive(:call)
+        relation.delete(identifier)
+      end
+    end
   end
 end
