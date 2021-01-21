@@ -20,6 +20,42 @@ RSpec.describe Userlist::Push::Company do
     expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /identifier/)
   end
 
+  context 'when given a user' do
+    subject { described_class.new(payload) }
+
+    let(:payload) do
+      super().merge(
+        user: { identifier: 'user-identifier' }
+      )
+    end
+
+    it 'should convert the item into a user object' do
+      expect(subject.user).to be_an_instance_of(Userlist::Push::User)
+    end
+  end
+
+  context 'when given a list of users' do
+    subject { described_class.new(payload) }
+
+    let(:payload) do
+      super().merge(
+        users: [
+          { identifier: 'user-identifier' },
+          { identifier: 'other-user-identifier' }
+        ]
+      )
+    end
+
+    it 'should convert the items into user objects' do
+      expect(subject.users).to match(
+        [
+          an_instance_of(Userlist::Push::User),
+          an_instance_of(Userlist::Push::User)
+        ]
+      )
+    end
+  end
+
   context 'when given a list of relationships' do
     subject { described_class.new(payload) }
 
