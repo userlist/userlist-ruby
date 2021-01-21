@@ -11,9 +11,20 @@ module Userlist
       def self.lookup_strategy(strategy)
         return strategy unless strategy.is_a?(Symbol) || strategy.is_a?(String)
 
-        name = strategy.to_s.capitalize
-        require("userlist/push/strategies/#{strategy}") unless const_defined?(name, false)
-        const_get(name, false)
+        require_strategy(strategy)
+        const_get(strategy.to_s.capitalize, false)
+      end
+
+      def self.strategy_defined?(strategy)
+        return true unless strategy.is_a?(Symbol) || strategy.is_a?(String)
+
+        const_defined?(strategy.to_s.capitalize, false)
+      end
+
+      def self.require_strategy(strategy)
+        return unless strategy.is_a?(Symbol) || strategy.is_a?(String)
+
+        require("userlist/push/strategies/#{strategy}") unless strategy_defined?(strategy)
       end
     end
   end
