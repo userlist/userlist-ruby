@@ -1,5 +1,3 @@
-require 'set'
-
 module Userlist
   class Push
     class Resource
@@ -22,13 +20,17 @@ module Userlist
         end
 
         def relationship_names
-          @relationship_names ||= Set.new
+          @relationship_names ||= relationships.keys
+        end
+
+        def relationships
+          @relationships ||= {}
         end
 
       protected
 
         def has_one(name, type:) # rubocop:disable Naming/PredicateName
-          relationship_names << name.to_sym
+          relationships[name.to_sym] = { type: type }
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{name}
@@ -37,12 +39,14 @@ module Userlist
           RUBY
         end
 
-        def has_many(name, type:) # rubocop:disable Naming/PredicateName
-          relationship_names << name.to_sym
+        def has_many(name, **options) # rubocop:disable Naming/PredicateName
+          relationships[name.to_sym] = options
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{name}
-              ResourceCollection.new(payload[:#{name}], #{type}, config)
+              relationship = self.class.relationships[:#{name}]
+
+              ResourceCollection.new(payload[:#{name}], relationship, self, config)
             end
           RUBY
         end

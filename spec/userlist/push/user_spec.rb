@@ -65,14 +65,12 @@ RSpec.describe Userlist::Push::User do
         relationships: [
           {
             company: 'company-identifier',
-            user: 'user-identifier',
             properties: {
               role: 'owner'
             }
           },
           {
             company: 'other-company-identifier',
-            user: 'user-identifier',
             properties: {
               role: 'user'
             }

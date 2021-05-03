@@ -8,7 +8,7 @@ module Userlist
         '/companies'
       end
 
-      has_many :relationships, type: 'Userlist::Push::Relationship'
+      has_many :relationships, type: 'Userlist::Push::Relationship', inverse: :company
       has_many :users, type: 'Userlist::Push::User'
       has_one  :user, type: 'Userlist::Push::User'
 
