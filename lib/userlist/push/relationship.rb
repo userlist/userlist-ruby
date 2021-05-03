@@ -9,7 +9,8 @@ module Userlist
 
       def initialize(payload = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required payload' unless payload
-        raise Userlist::ArgumentError, 'Missing required parameter :user or :company' unless payload[:user] || payload[:company]
+        raise Userlist::ArgumentError, 'Missing required parameter :user' unless payload[:user]
+        raise Userlist::ArgumentError, 'Missing required parameter :company' unless payload[:company]
 
         super
       end

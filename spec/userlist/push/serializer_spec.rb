@@ -11,7 +11,7 @@ RSpec.describe Userlist::Push::Serializer do
 
   let(:company) do
     Userlist::Push::Company.new(
-      'identifier': 'company-identifier',
+      identifier: 'company-identifier',
       name: 'Example, Inc.',
       signed_up_at: nil
     )
@@ -231,27 +231,6 @@ RSpec.describe Userlist::Push::Serializer do
         it 'should return no payload' do
           expect(payload).to_not be
         end
-
-        context 'when there is no user' do
-          let(:user) { nil }
-
-          it 'should return the correct payload' do
-            expect(payload).to eq(
-              name: 'example_event',
-              occured_at: event.occured_at,
-              company: {
-                identifier: 'company-identifier',
-                name: 'Example, Inc.',
-                signed_up_at: nil
-              },
-              properties: {
-                null: nil,
-                empty: [],
-                value: 'foo'
-              }
-            )
-          end
-        end
       end
 
       context 'when serializing the company is not allowed' do
@@ -261,27 +240,6 @@ RSpec.describe Userlist::Push::Serializer do
 
         it 'should return no payload' do
           expect(payload).to_not be
-        end
-
-        context 'when there is no company' do
-          let(:company) { nil }
-
-          it 'should return the correct payload' do
-            expect(payload).to eq(
-              name: 'example_event',
-              occured_at: event.occured_at,
-              user: {
-                identifier: 'user-identifier',
-                email: 'foo@example.com',
-                signed_up_at: nil
-              },
-              properties: {
-                null: nil,
-                empty: [],
-                value: 'foo'
-              }
-            )
-          end
         end
       end
     end
