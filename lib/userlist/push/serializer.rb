@@ -1,3 +1,5 @@
+require 'set'
+
 module Userlist
   class Push
     class Serializer
