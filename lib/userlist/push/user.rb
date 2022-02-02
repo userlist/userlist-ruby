@@ -10,7 +10,7 @@ module Userlist
 
       def initialize(payload = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required payload' unless payload
-        raise Userlist::ArgumentError, 'Missing required parameter :identifier' unless payload[:identifier]
+        raise Userlist::ArgumentError, 'Missing required parameter :identifier or :email' unless payload[:identifier] || payload[:email]
 
         super
       end

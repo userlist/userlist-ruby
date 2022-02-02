@@ -4,6 +4,7 @@ RSpec.describe Userlist::Push::User do
   let(:payload) do
     {
       identifier: 'user-identifier',
+      email: 'john@example.com',
       properties: {
         first_name: 'John',
         last_name: 'Doe'
@@ -11,14 +12,29 @@ RSpec.describe Userlist::Push::User do
     }
   end
 
-  it 'should raise an error when no payload is given' do
-    expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
-  end
+  describe 'validations' do
+    it 'should raise an error when no payload is given' do
+      expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
+    end
 
-  it 'should raise an error when no identifier is given' do
-    payload.delete(:identifier)
+    it 'should raise an error when no identifier or email is given' do
+      payload.delete(:identifier)
+      payload.delete(:email)
 
-    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /identifier/)
+      expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /:identifier or :email/)
+    end
+
+    it 'should not rais an error when no identifier but an email address is given' do
+      payload.delete(:identifier)
+
+      expect { described_class.new(payload) }.to_not raise_error
+    end
+
+    it 'should not rais an error when an identifier but no email address is given' do
+      payload.delete(:email)
+
+      expect { described_class.new(payload) }.to_not raise_error
+    end
   end
 
   context 'when given a company' do
