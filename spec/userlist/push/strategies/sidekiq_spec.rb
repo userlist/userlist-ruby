@@ -12,6 +12,7 @@ RSpec.describe Userlist::Push::Strategies::Sidekiq do
   let(:queue) { Sidekiq::Queues['default'] }
 
   before do
+    Sidekiq.strict_args!
     Sidekiq::Queues.clear_all
   end
 

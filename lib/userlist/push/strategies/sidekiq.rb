@@ -11,7 +11,11 @@ module Userlist
         end
 
         def call(*args)
-          ::Sidekiq::Client.push(default_options.merge(options).merge('args' => args))
+          payload = default_options
+            .merge(options)
+            .merge('args' => normalize(args))
+
+          ::Sidekiq::Client.push(payload)
         end
 
       private
@@ -30,6 +34,10 @@ module Userlist
             'class' => 'Userlist::Push::Strategies::Sidekiq::Worker',
             'queue' => 'default'
           }
+        end
+
+        def normalize(args)
+          JSON.parse(JSON.generate(args))
         end
       end
     end
