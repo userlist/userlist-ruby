@@ -51,6 +51,10 @@ module Userlist
       yield config
     end
 
+    def reset!
+      @config = nil
+    end
+
     attr_writer :logger
   end
 end
