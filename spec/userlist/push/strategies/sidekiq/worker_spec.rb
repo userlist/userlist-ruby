@@ -3,6 +3,8 @@ require 'spec_helper'
 require 'userlist/push/strategies/sidekiq'
 require 'sidekiq/testing'
 
+Sidekiq.strict_args! if Sidekiq.respond_to?(:strict_args!)
+
 RSpec.describe Userlist::Push::Strategies::Sidekiq::Worker do
   subject { described_class.new(queue, config) }
 

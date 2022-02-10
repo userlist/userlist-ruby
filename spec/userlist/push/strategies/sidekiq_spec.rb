@@ -3,6 +3,8 @@ require 'spec_helper'
 require 'userlist/push/strategies/sidekiq'
 require 'sidekiq/testing'
 
+Sidekiq.strict_args! if Sidekiq.respond_to?(:strict_args!)
+
 RSpec.describe Userlist::Push::Strategies::Sidekiq do
   subject { described_class.new(config) }
 
@@ -12,7 +14,6 @@ RSpec.describe Userlist::Push::Strategies::Sidekiq do
   let(:queue) { Sidekiq::Queues['default'] }
 
   before do
-    Sidekiq.strict_args!
     Sidekiq::Queues.clear_all
   end
 
