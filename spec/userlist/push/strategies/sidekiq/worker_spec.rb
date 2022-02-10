@@ -11,10 +11,6 @@ RSpec.describe Userlist::Push::Strategies::Sidekiq::Worker do
   let(:client) { instance_double('Userlist::Push::Client') }
 
   let(:payload) do
-    { foo: :bar }
-  end
-
-  let(:expected_payload) do
     { 'foo' => 'bar' }
   end
 
@@ -30,15 +26,15 @@ RSpec.describe Userlist::Push::Strategies::Sidekiq::Worker do
   end
 
   it 'should process the job' do
-    expect(client).to receive(:post).with('/events', expected_payload).exactly(5).times
-    5.times { described_class.perform_async(:post, '/events', payload) }
+    expect(client).to receive(:post).with('/events', payload).exactly(5).times
+    5.times { described_class.perform_async('post', '/events', payload) }
   end
 
   it 'should process requests with and without payload' do
-    expect(client).to receive(:post).with('/user', expected_payload).once
+    expect(client).to receive(:post).with('/user', payload).once
     expect(client).to receive(:delete).with('/user/identifier').once
 
-    described_class.perform_async(:post, '/user', payload)
-    described_class.perform_async(:delete, '/user/identifier')
+    described_class.perform_async('post', '/user', payload)
+    described_class.perform_async('delete', '/user/identifier')
   end
 end
