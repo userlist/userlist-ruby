@@ -57,6 +57,7 @@ module Userlist
 
         logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
 
+        http.start unless http.started?
         http.request(request)
       end
 
