@@ -33,9 +33,9 @@ module Userlist
           relationships[name.to_sym] = { type: type }
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def #{name}
-              #{type}.from_payload(payload[:#{name}], config)
-            end
+            def #{name}                                        # def company
+              #{type}.from_payload(payload[:#{name}], config)  #   Company.from_payload(payload[:company], config)
+            end                                                # end
           RUBY
         end
 
@@ -43,11 +43,11 @@ module Userlist
           relationships[name.to_sym] = options
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def #{name}
-              relationship = self.class.relationships[:#{name}]
-
-              ResourceCollection.new(payload[:#{name}], relationship, self, config)
-            end
+            def #{name}                                                             # def companies
+              relationship = self.class.relationships[:#{name}]                     #   relationship = self.class.relationships[:companies]
+                                                                                    #
+              ResourceCollection.new(payload[:#{name}], relationship, self, config) # ResourceCollection.new(payload[:companies], relationship, self, config)
+            end                                                                     #
           RUBY
         end
 

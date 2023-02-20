@@ -53,7 +53,7 @@ module Userlist
 
     def config_from_environment
       default_config.keys.each_with_object({}) do |key, config|
-        value = ENV["USERLIST_#{key.to_s.upcase}"]
+        value = ENV.fetch("USERLIST_#{key.to_s.upcase}", nil)
         config[key] = value if value
       end
     end
