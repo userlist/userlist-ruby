@@ -58,7 +58,11 @@ module Userlist
         logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
 
         http.start unless http.started?
-        http.request(request)
+        response = http.request(request)
+
+        logger.debug "Recieved #{response.code} #{response.message} with body #{response.body}"
+
+        response
       end
 
       def endpoint
