@@ -6,6 +6,6 @@ gemspec
 
 gem 'guard-rspec', '~> 4.7'
 gem 'guard-rubocop', '~> 1.3'
-gem 'rubocop', '~> 0.68'
+gem 'rubocop', '~> 1.45'
 
 gem 'sidekiq'
