@@ -27,8 +27,8 @@ module Userlist
         request(Net::HTTP::Put, endpoint, payload)
       end
 
-      def delete(endpoint)
-        request(Net::HTTP::Delete, endpoint)
+      def delete(endpoint, payload = nil)
+        request(Net::HTTP::Delete, endpoint, payload)
       end
 
     private

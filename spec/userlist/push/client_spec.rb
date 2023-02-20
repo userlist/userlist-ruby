@@ -102,9 +102,12 @@ RSpec.describe Userlist::Push::Client do
   end
 
   describe '#delete' do
-    it 'should send the request to the given endpoint' do
+    it 'should send the payload to the given endpoint' do
+      payload = { foo: :bar }
+
       stub_request(:delete, 'https://endpoint.test.local/events')
         .with(
+          body: JSON.dump(payload),
           headers: {
             'Accept' => 'application/json',
             'Content-Type' => 'application/json; charset=UTF-8',
@@ -113,7 +116,7 @@ RSpec.describe Userlist::Push::Client do
         )
         .to_return(status: 202)
 
-      subject.delete('/events')
+      subject.delete('/events', payload)
     end
   end
 end
