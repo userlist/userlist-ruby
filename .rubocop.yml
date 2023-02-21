@@ -51,6 +51,9 @@ Style/ClassAndModuleChildren:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
+Layout/SpaceAroundOperators:
+  EnforcedStyleForExponentOperator: space
+
 Style/SymbolArray:
   Enabled: false
 

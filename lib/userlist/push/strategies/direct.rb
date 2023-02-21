@@ -7,7 +7,7 @@ module Userlist
         end
 
         def call(*args)
-          client.public_send(*args)
+          retryable.attempt { client.public_send(*args) }
         end
 
       private
@@ -16,6 +16,14 @@ module Userlist
 
         def client
           @client ||= Userlist::Push::Client.new(config)
+        end
+
+        def retryable
+          @retryable ||= Userlist::Retryable.new do |response|
+            status = response.code.to_i
+
+            status >= 500 || status == 429
+          end
         end
       end
     end

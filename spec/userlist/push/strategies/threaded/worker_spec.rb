@@ -17,7 +17,7 @@ RSpec.describe Userlist::Push::Strategies::Threaded::Worker do
   before do
     allow(Userlist).to receive(:logger).and_return(logger)
     allow(Userlist::Push::Client).to receive(:new).and_return(client)
-    allow(client).to receive(:post)
+    allow(client).to receive(:post) { double(code: '202') }
   end
 
   after do
@@ -40,6 +40,15 @@ RSpec.describe Userlist::Push::Strategies::Threaded::Worker do
 
     queue.push([:post, '/user', payload])
     queue.push([:delete, '/user/identifier'])
+  end
+
+  it 'should retry failed responses' do
+    payload = { foo: :bar }
+
+    expect(client).to receive(:post) { double(code: '500') }.exactly(11).times
+    expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
+
+    queue.push([:post, '/users', payload])
   end
 
   it 'should log failed requests' do

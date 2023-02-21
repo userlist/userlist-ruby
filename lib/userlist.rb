@@ -3,6 +3,7 @@ require 'logger'
 require 'userlist/version'
 require 'userlist/config'
 require 'userlist/logging'
+require 'userlist/retryable'
 require 'userlist/push'
 require 'userlist/token'
 

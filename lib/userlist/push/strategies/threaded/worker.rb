@@ -22,7 +22,7 @@ module Userlist
                 method, *args = *queue.pop
                 break if method == :stop
 
-                client.public_send(method, *args)
+                retryable.attempt { client.public_send(method, *args) }
               rescue StandardError => e
                 logger.error "Failed to deliver payload: [#{e.class.name}] #{e.message}"
               end
@@ -43,6 +43,14 @@ module Userlist
 
           def client
             @client ||= Userlist::Push::Client.new(config)
+          end
+
+          def retryable
+            @retryable ||= Userlist::Retryable.new do |response|
+              status = response.code.to_i
+
+              status >= 500 || status == 429
+            end
           end
         end
       end

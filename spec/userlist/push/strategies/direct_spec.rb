@@ -8,7 +8,7 @@ RSpec.describe Userlist::Push::Strategies::Direct do
   let(:client) { instance_double('Userlist::Push::Client') }
 
   before do
-    allow(client).to receive(:post)
+    allow(client).to receive(:post) { double(code: '202') }
   end
 
   it 'should pass on the configuration' do
@@ -26,6 +26,15 @@ RSpec.describe Userlist::Push::Strategies::Direct do
     it 'should forward the call to the client' do
       payload = { foo: :bar }
       expect(client).to receive(:post).with('/users', payload)
+      subject.call(:post, '/users', payload)
+    end
+
+    it 'should retry failed responses' do
+      payload = { foo: :bar }
+
+      expect(client).to receive(:post) { double(code: '500') }.exactly(11).times
+      expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
+
       subject.call(:post, '/users', payload)
     end
   end
