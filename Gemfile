@@ -9,3 +9,5 @@ gem 'guard-rubocop', '~> 1.3'
 gem 'rubocop', '~> 1.45'
 
 gem 'sidekiq'
+gem 'activejob'
+gem 'uri'
