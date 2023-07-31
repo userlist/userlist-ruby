@@ -12,13 +12,13 @@ module Userlist
         return strategy unless strategy.is_a?(Symbol) || strategy.is_a?(String)
 
         require_strategy(strategy)
-        const_get(strategy.to_s.capitalize, false)
+        const_get(strategy.to_s.camelize, false)
       end
 
       def self.strategy_defined?(strategy)
         return true unless strategy.is_a?(Symbol) || strategy.is_a?(String)
 
-        const_defined?(strategy.to_s.capitalize, false)
+        const_defined?(strategy.to_s.camelize, false)
       end
 
       def self.require_strategy(strategy)
