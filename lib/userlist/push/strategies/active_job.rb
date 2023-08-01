@@ -15,10 +15,9 @@ module Userlist
 
           worker_name = options.delete(:class)
           worker_class = Object.const_get(worker_name)
-
           worker_class
             .set(options)
-            .perform_later(*args)
+            .perform_later(*normalize(args))
         end
 
       private
@@ -37,6 +36,10 @@ module Userlist
             class: 'Userlist::Push::Strategies::ActiveJob::Worker',
             queue: 'default'
           }
+        end
+
+        def normalize(args)
+          JSON.parse(JSON.generate(args))
         end
       end
     end
