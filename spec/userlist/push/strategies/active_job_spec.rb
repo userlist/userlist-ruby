@@ -27,7 +27,7 @@ RSpec.describe Userlist::Push::Strategies::ActiveJob do
 
   it 'should pass along the arguments' do
     subject.call(:post, '/users', {})
-    expect(job['arguments']).to eq(ActiveJob::Arguments.serialize([:post, '/users', {}]))
+    expect(job['arguments']).to eq(ActiveJob::Arguments.serialize(['post', '/users', {}]))
   end
 
   context 'when there is a custom queue given' do
