@@ -12,13 +12,16 @@ module Userlist
         return strategy unless strategy.is_a?(Symbol) || strategy.is_a?(String)
 
         require_strategy(strategy)
-        const_get(strategy.to_s.capitalize, false)
+
+        class_name = classify_strategy(strategy)
+        const_get(class_name, false)
       end
 
       def self.strategy_defined?(strategy)
         return true unless strategy.is_a?(Symbol) || strategy.is_a?(String)
 
-        const_defined?(strategy.to_s.capitalize, false)
+        class_name = classify_strategy(strategy)
+        const_defined?(class_name, false)
       end
 
       def self.require_strategy(strategy)
@@ -26,6 +29,11 @@ module Userlist
 
         require("userlist/push/strategies/#{strategy}") unless strategy_defined?(strategy)
       end
+
+      def self.classify_strategy(strategy)
+        strategy.to_s.split('_').map(&:capitalize).join
+      end
+      private_class_method :classify_strategy
     end
   end
 end

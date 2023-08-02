@@ -28,6 +28,11 @@ RSpec.describe Userlist::Push::Strategies do
       expect(strategy).to be_an_instance_of(Userlist::Push::Strategies::Direct)
     end
 
+    it 'should work with an camelized string' do
+      strategy = described_class.strategy_for('active_job', config)
+      expect(strategy).to be_an_instance_of(Userlist::Push::Strategies::ActiveJob)
+    end
+
     it 'should require the given strategy' do
       expect(subject).to receive(:require).with('userlist/push/strategies/null').and_call_original
       strategy = described_class.strategy_for(:null, config)
