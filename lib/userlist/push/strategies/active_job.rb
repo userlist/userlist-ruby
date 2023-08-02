@@ -1,5 +1,6 @@
 require 'active_job'
 
+require 'userlist/push/strategies/active_job/serializer'
 require 'userlist/push/strategies/active_job/worker'
 
 module Userlist
@@ -17,7 +18,7 @@ module Userlist
           worker_class = Object.const_get(worker_name)
           worker_class
             .set(options)
-            .perform_later(*normalize(args))
+            .perform_later(*args)
         end
 
       private
@@ -36,10 +37,6 @@ module Userlist
             class: 'Userlist::Push::Strategies::ActiveJob::Worker',
             queue: 'default'
           }
-        end
-
-        def normalize(args)
-          JSON.parse(JSON.generate(args))
         end
       end
     end
