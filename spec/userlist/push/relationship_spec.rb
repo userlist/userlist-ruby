@@ -65,26 +65,4 @@ RSpec.describe Userlist::Push::Relationship do
       expect(subject.company.name).to eq('Foo, Inc.')
     end
   end
-
-  describe '#url' do
-    it 'should combine the endpoint, the user identifier, and the company identifier' do
-      expect(subject.url).to eq('/relationships/user-identifier/company-identifier')
-    end
-
-    context 'when no user is given' do
-      let(:payload) { super().merge(user: nil) }
-
-      it 'should raise an error message' do
-        expect { subject.url }.to raise_error(Userlist::Error, /user/)
-      end
-    end
-
-    context 'when no company is given' do
-      let(:payload) { super().merge(company: nil) }
-
-      it 'should raise an error message' do
-        expect { subject.url }.to raise_error(Userlist::Error, /company/)
-      end
-    end
-  end
 end

@@ -5,14 +5,17 @@ RSpec.describe Userlist::Push::Operations::Delete do
   let(:relation) { Userlist::Push::Relation.new(scope, resource_type, [described_class]) }
   let(:scope) { Userlist::Push.new(push_strategy: strategy) }
   let(:strategy) { instance_double('Userlist::Push::Strategies::Direct') }
+  let(:resource) { resource_type.from_payload(payload) }
 
   describe '.delete' do
     let(:identifier) { 'identifier' }
 
     context 'when given an identifier' do
+      let(:payload) { identifier }
+
       it 'should send the request to the endpoint' do
-        expect(strategy).to receive(:call).with(:delete, '/users/identifier')
-        relation.delete(identifier)
+        expect(strategy).to receive(:call).with(:delete, '/users', resource)
+        relation.delete(payload)
       end
     end
 
@@ -22,7 +25,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
       end
 
       it 'should send the request to the endpoint' do
-        expect(strategy).to receive(:call).with(:delete, '/users/identifier')
+        expect(strategy).to receive(:call).with(:delete, '/users', resource)
         relation.delete(payload)
       end
     end

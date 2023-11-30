@@ -5,7 +5,7 @@ RSpec.describe Userlist::Push::Operations::Create do
   let(:relation) { Userlist::Push::Relation.new(scope, resource_type, [described_class]) }
   let(:scope) { Userlist::Push.new(push_strategy: strategy) }
   let(:strategy) { instance_double('Userlist::Push::Strategies::Direct') }
-  let(:resource) { resource_type.new(payload) }
+  let(:resource) { resource_type.from_payload(payload) }
 
   let(:payload) do
     {

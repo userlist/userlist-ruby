@@ -6,7 +6,7 @@ module Userlist
           def delete(payload = {}, config = self.config)
             return false unless resource = from_payload(payload, config)
 
-            strategy.call(:delete, resource.url) if resource.delete?
+            strategy.call(:delete, endpoint, resource) if resource.delete?
           end
         end
 

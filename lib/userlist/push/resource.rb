@@ -81,10 +81,6 @@ module Userlist
         to_hash.to_json(*args)
       end
 
-      def url
-        "#{self.class.endpoint}/#{identifier}"
-      end
-
       def identifier
         payload[:identifier]
       end
