@@ -32,7 +32,7 @@ RSpec.describe Userlist::Push::Serializer do
       user: user,
       company: company,
       name: 'example_event',
-      occured_at: Time.now,
+      occurred_at: Time.now,
       properties: {
         null: nil,
         empty: [],
@@ -223,7 +223,7 @@ RSpec.describe Userlist::Push::Serializer do
       it 'should return the correct payload' do
         expect(payload).to eq(
           name: 'example_event',
-          occured_at: event.occured_at,
+          occurred_at: event.occurred_at,
           user: {
             identifier: 'user-identifier',
             email: 'foo@example.com',

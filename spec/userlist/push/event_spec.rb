@@ -28,11 +28,11 @@ RSpec.describe Userlist::Push::Event do
     expect(subject.push?).to be_truthy
   end
 
-  it 'should set the occured_at property' do
-    payload.delete(:occured_at)
+  it 'should set the occurred_at property' do
+    payload.delete(:occurred_at)
     event = described_class.new(payload)
 
-    expect(event.occured_at).to be_an_instance_of(Time)
+    expect(event.occurred_at).to be_an_instance_of(Time)
   end
 
   context 'when a user hash is given' do
@@ -108,6 +108,18 @@ RSpec.describe Userlist::Push::Event do
 
     it 'should not be pushable' do
       expect(subject.push?).to be_falsey
+    end
+  end
+
+  context 'when there is a legacy occured_at property' do
+    let(:payload) do
+      super().merge(occured_at: timestamp )
+    end
+
+    let(:timestamp) { Time.parse('2018-01-01T00:00:00Z') }
+
+    it 'should set the occurred_at property' do
+      expect(subject.occurred_at).to eq(timestamp)
     end
   end
 end

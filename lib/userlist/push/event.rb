@@ -13,8 +13,8 @@ module Userlist
         super
       end
 
-      def occured_at
-        payload[:occured_at] || Time.now
+      def occurred_at
+        payload[:occurred_at] || payload[:occured_at] || Time.now
       end
 
       def push?
