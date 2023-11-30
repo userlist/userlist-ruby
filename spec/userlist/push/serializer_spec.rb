@@ -270,6 +270,19 @@ RSpec.describe Userlist::Push::Serializer do
           expect(payload).to_not be
         end
       end
+
+      context 'when there is no occurred_at given' do
+        let(:event) do
+          Userlist::Push::Event.new(
+            user: user,
+            name: 'example_event'
+          )
+        end
+
+        it 'should set a default occurred_at' do
+          expect(payload[:occurred_at]).to be_within(1).of(Time.now)
+        end
+      end
     end
   end
 end

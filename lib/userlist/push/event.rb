@@ -10,11 +10,9 @@ module Userlist
         raise Userlist::ArgumentError, 'Missing required payload' unless payload
         raise Userlist::ArgumentError, 'Missing required parameter :name' unless payload[:name]
 
-        super
-      end
+        payload[:occurred_at] ||= payload[:occured_at] || Time.now
 
-      def occurred_at
-        payload[:occurred_at] || payload[:occured_at] || Time.now
+        super
       end
 
       def push?
