@@ -96,6 +96,20 @@ RSpec.describe Userlist::Push::Serializer do
           )
         end
       end
+
+      context 'when serializing the relationship is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::Relationship).to receive(:push?).and_return(false)
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            identifier: 'user-identifier',
+            email: 'foo@example.com',
+            signed_up_at: nil
+          )
+        end
+      end
     end
 
     context 'when serializing the company' do
@@ -143,6 +157,20 @@ RSpec.describe Userlist::Push::Serializer do
 
         it 'should return no payload' do
           expect(payload).to_not be
+        end
+      end
+
+      context 'when serializing the relationship is not allowed' do
+        before do
+          allow_any_instance_of(Userlist::Push::Relationship).to receive(:push?).and_return(false)
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            identifier: 'company-identifier',
+            name: 'Example, Inc.',
+            signed_up_at: nil
+          )
         end
       end
     end
