@@ -18,7 +18,7 @@ module Userlist
       end
 
       def push?
-        super && (user.nil? || user.push?) && (company.nil? || company.push?)
+        super && (user || company) && (user.nil? || user.push?) && (company.nil? || company.push?)
       end
     end
   end

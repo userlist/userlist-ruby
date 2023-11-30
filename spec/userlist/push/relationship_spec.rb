@@ -18,9 +18,11 @@ RSpec.describe Userlist::Push::Relationship do
     expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
   end
 
-  context 'when a user hash is given' do
-    subject { described_class.new(payload) }
+  it 'should be pushable' do
+    expect(subject.push?).to be_truthy
+  end
 
+  context 'when a user hash is given' do
     let(:payload) do
       super().merge(
         user: {
@@ -40,11 +42,13 @@ RSpec.describe Userlist::Push::Relationship do
     it 'should include the user\'s properties' do
       expect(subject.user.email).to eq('foo@example.com')
     end
+
+    it 'should be pushable' do
+      expect(subject.push?).to be_truthy
+    end
   end
 
   context 'when a company hash is given' do
-    subject { described_class.new(payload) }
-
     let(:payload) do
       super().merge(
         company: {
@@ -63,6 +67,30 @@ RSpec.describe Userlist::Push::Relationship do
 
     it 'should include the company\'s properties' do
       expect(subject.company.name).to eq('Foo, Inc.')
+    end
+
+    it 'should be pushable' do
+      expect(subject.push?).to be_truthy
+    end
+  end
+
+  context 'when the user is missing' do
+    let(:payload) do
+      super().merge(user: nil)
+    end
+
+    it 'should not be pushable' do
+      expect(subject.push?).to be_falsey
+    end
+  end
+
+  context 'when the company is missing' do
+    let(:payload) do
+      super().merge(company: nil)
+    end
+
+    it 'should not be pushable' do
+      expect(subject.push?).to be_falsey
     end
   end
 end
