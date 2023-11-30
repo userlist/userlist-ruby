@@ -61,6 +61,8 @@ module Userlist
       attr_reader :payload, :config
 
       def initialize(payload = {}, config = Userlist.config)
+        raise Userlist::ArgumentError, 'Missing required payload' unless payload
+
         @payload = payload
         @config = config
       end

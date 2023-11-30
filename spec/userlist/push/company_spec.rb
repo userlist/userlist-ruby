@@ -14,12 +14,6 @@ RSpec.describe Userlist::Push::Company do
     expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
   end
 
-  it 'should raise an error when no identifier is given' do
-    payload.delete(:identifier)
-
-    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /identifier/)
-  end
-
   context 'when given a user' do
     subject { described_class.new(payload) }
 

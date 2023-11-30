@@ -18,18 +18,6 @@ RSpec.describe Userlist::Push::Relationship do
     expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
   end
 
-  it 'should raise an error when no user is given' do
-    payload.delete(:user)
-
-    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /user/)
-  end
-
-  it 'should raise an error when no company is given' do
-    payload.delete(:company)
-
-    expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /company/)
-  end
-
   context 'when a user hash is given' do
     subject { described_class.new(payload) }
 

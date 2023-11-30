@@ -16,25 +16,6 @@ RSpec.describe Userlist::Push::User do
     it 'should raise an error when no payload is given' do
       expect { described_class.new(nil) }.to raise_error(Userlist::ArgumentError, /payload/)
     end
-
-    it 'should raise an error when no identifier or email is given' do
-      payload.delete(:identifier)
-      payload.delete(:email)
-
-      expect { described_class.new(payload) }.to raise_error(Userlist::ArgumentError, /:identifier or :email/)
-    end
-
-    it 'should not rais an error when no identifier but an email address is given' do
-      payload.delete(:identifier)
-
-      expect { described_class.new(payload) }.to_not raise_error
-    end
-
-    it 'should not rais an error when an identifier but no email address is given' do
-      payload.delete(:email)
-
-      expect { described_class.new(payload) }.to_not raise_error
-    end
   end
 
   context 'when given a company' do
