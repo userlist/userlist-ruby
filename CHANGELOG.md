@@ -1,5 +1,9 @@
 # Userlist for Ruby Changelog
 
+## v0.8.1 (2023-11-30)
+
+- Fixes issue with customizability of push? and delete? methods on events and relationships
+
 ## v0.8.0 (2023-08-02)
 
 - Adds a ActiveJob push strategy
