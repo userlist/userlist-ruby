@@ -1,5 +1,10 @@
 # Userlist for Ruby Changelog
 
+## Unreleased
+
+- Allows deleteing resources by using other identifiers (like email)
+- Relaxes requirement for providing associations. Incomplete resources will not be pushed anyways.
+
 ## v0.8.1 (2023-11-30)
 
 - Fixes issue with customizability of push? and delete? methods on events and relationships
