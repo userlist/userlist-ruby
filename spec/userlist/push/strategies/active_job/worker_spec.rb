@@ -28,4 +28,11 @@ RSpec.describe Userlist::Push::Strategies::ActiveJob::Worker do
     described_class.perform_now('post', '/user', payload)
     described_class.perform_now('delete', '/user/identifier')
   end
+
+  it 'should retry the job on failure' do
+    allow(client).to receive(:post).and_raise(Timeout::Error)
+
+    expect { described_class.perform_now('post', '/events', payload) }
+      .to change(described_class.queue_adapter.enqueued_jobs, :size).by(1)
+  end
 end
