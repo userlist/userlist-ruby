@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 require 'userlist/push/strategies/active_job/worker'
-require 'support/active_job'
 
 RSpec.describe Userlist::Push::Strategies::ActiveJob::Worker do
   subject { described_class.new(queue, config) }
