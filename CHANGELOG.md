@@ -1,6 +1,6 @@
 # Userlist for Ruby Changelog
 
-## v0.9.1 (2024-10-21)
+## Unreleased (main)
 
 - Updates ActiveJob Worker to retry on Timeout::Error with polynomially longer wait times, up to 10 attempts
 
