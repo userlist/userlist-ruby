@@ -1,5 +1,9 @@
 # Userlist for Ruby Changelog
 
+## v0.9.1 (2024-10-21)
+
+- Updates ActiveJob Worker to retry on Timeout::Error with polynomially longer wait times, up to 10 attempts
+
 ## v0.9.0 (2024-03-19)
 
 - Allows deleteing resources by using other identifiers (like email)
