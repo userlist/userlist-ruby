@@ -12,6 +12,12 @@ module Userlist
 
   class ArgumentError < Error; end
 
+  class ServerError < Error; end
+
+  class TooManyRequestsError < Error; end
+
+  class TimeoutError < Error; end
+
   class ConfigurationError < Error
     attr_reader :key
 

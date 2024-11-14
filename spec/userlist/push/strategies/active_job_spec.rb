@@ -70,4 +70,6 @@ RSpec.describe Userlist::Push::Strategies::ActiveJob do
       expect(job['priority']).to eq(42)
     end
   end
+
+  
 end

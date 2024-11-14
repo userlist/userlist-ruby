@@ -20,6 +20,7 @@ module Userlist
     end
 
     def attempt
+      result = nil
       (0..@retries).each do |attempt|
         if attempt.positive?
           milliseconds = delay(attempt)
@@ -33,8 +34,7 @@ module Userlist
       end
 
       logger.debug 'Retries exhausted, giving up'
-
-      nil
+      result
     end
 
   private

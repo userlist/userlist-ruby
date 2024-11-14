@@ -80,6 +80,31 @@ RSpec.describe Userlist::Push::Client do
 
       subject.post('/events', payload)
     end
+
+    it 'retries on server errors (500s), timeouts (408), and rate limits (429)' do
+      stub_request(:post, 'https://endpoint.test.local/events')
+        .to_return(
+          { status: 500 },  # First attempt fails with server error
+          { status: 408 },  # Second attempt fails with timeout
+          { status: 429 },  # Third attempt fails with rate limit
+          { status: 200 }   # Fourth attempt succeeds
+        )
+
+      expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(3).times
+      
+      response = subject.post('/events', { foo: :bar })
+      expect(response.code).to eq('200')
+    end
+
+    it 'gives up after maximum retry attempts' do
+      stub_request(:post, 'https://endpoint.test.local/events')
+        .to_return(status: 500).times(11) # Initial attempt + 10 retries
+
+      expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
+      
+      expect { subject.post('/events', { foo: :bar }) }
+        .to raise_error(Userlist::ServerError, "Server error: 500")
+    end
   end
 
   describe '#put' do
