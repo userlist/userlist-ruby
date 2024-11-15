@@ -9,10 +9,10 @@ module Userlist
       include Userlist::Logging
 
       HTTP_STATUS = {
-        ok: (200..299),
-        server_error: (500..599),
-        timeout: 408,
-        rate_limit: 429
+        ok: 200..299,
+        server_error: 500..599,
+        timeout: 408..408,
+        rate_limit: 429..429
       }.freeze
 
       def initialize(config = {})
@@ -102,7 +102,7 @@ module Userlist
       end
 
       def status_type(status)
-        HTTP_STATUS.find { |type, range| range === status }&.first
+        HTTP_STATUS.find { |_, range| range.include?(status) }&.first
       end
 
       def error_mapping
