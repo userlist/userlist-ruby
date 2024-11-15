@@ -72,6 +72,8 @@ module Userlist
       def process_request(request)
         http.start unless http.started?
         http.request(request)
+      rescue Timeout::Error => e
+        raise Userlist::TimeoutError, e.message
       end
 
       def handle_response(response)

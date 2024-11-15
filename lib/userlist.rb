@@ -34,6 +34,8 @@ module Userlist
     end
   end
 
+  class TimeoutError < Error; end
+
   class RequestError < Error
     attr_reader :response
 
