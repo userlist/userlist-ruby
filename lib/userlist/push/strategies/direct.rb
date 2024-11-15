@@ -20,10 +20,15 @@ module Userlist
 
         def retryable
           @retryable ||= Userlist::Retryable.new do |error|
-            next false unless error.is_a?(Userlist::RequestError)
-
-            status = error.status
-            status >= 500 || status == 429
+            case error
+            when Userlist::RequestError
+              status = error.status
+              status >= 500 || status == 429
+            when Userlist::TimeoutError
+              true
+            else
+              false
+            end
           end
         end
       end

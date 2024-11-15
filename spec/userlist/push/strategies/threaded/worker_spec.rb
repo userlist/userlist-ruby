@@ -51,6 +51,15 @@ RSpec.describe Userlist::Push::Strategies::Threaded::Worker do
     queue.push([:post, '/users', payload])
   end
 
+  it 'should retry on timeouts' do
+    payload = { foo: :bar }
+
+    expect(client).to receive(:post) { raise Userlist::TimeoutError }.exactly(11).times
+    expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
+
+    queue.push([:post, '/users', payload])
+  end
+
   it 'should log failed requests' do
     allow(client).to receive(:post).and_raise(StandardError)
     queue.push([:post, '/events', payload])

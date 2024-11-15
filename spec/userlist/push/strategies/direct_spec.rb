@@ -37,5 +37,14 @@ RSpec.describe Userlist::Push::Strategies::Direct do
 
       subject.call(:post, '/users', payload)
     end
+
+    it 'should retry on timeouts' do
+      payload = { foo: :bar }
+
+      expect(client).to receive(:post) { raise Userlist::TimeoutError }.exactly(11).times
+      expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
+
+      subject.call(:post, '/users', payload)
+    end
   end
 end
