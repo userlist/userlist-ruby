@@ -23,7 +23,7 @@ RSpec.describe Userlist::Retryable do
     subject.attempt do
       attempts += 1
 
-      raise unless attempts > 5
+      raise Userlist::Error unless attempts > 5
     end
 
     expect(attempts).to eq(6)
@@ -35,7 +35,7 @@ RSpec.describe Userlist::Retryable do
     subject.attempt do
       attempts += 1
 
-      raise
+      raise Userlist::Error
     end
 
     expect(attempts).to eq(11)
@@ -44,6 +44,6 @@ RSpec.describe Userlist::Retryable do
   it 'should wait between the attempts' do
     expect(subject).to receive(:sleep).exactly(10).times
 
-    subject.attempt { raise }
+    subject.attempt { raise Userlist::Error }
   end
 end

@@ -29,7 +29,7 @@ module Userlist
           end
 
           return yield
-        rescue StandardError => e
+        rescue Userlist::Error => e
           raise e unless retry?(e)
         end
       end
