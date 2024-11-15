@@ -91,7 +91,7 @@ RSpec.describe Userlist::Push::Client do
         )
 
       expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(3).times
-      
+
       response = subject.post('/events', { foo: :bar })
       expect(response.code).to eq('200')
     end
@@ -101,9 +101,9 @@ RSpec.describe Userlist::Push::Client do
         .to_return(status: 500).times(11) # Initial attempt + 10 retries
 
       expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
-      
+
       expect { subject.post('/events', { foo: :bar }) }
-        .to raise_error(Userlist::ServerError, "Server error: 500")
+        .to raise_error(Userlist::ServerError, 'Server error: 500')
     end
   end
 

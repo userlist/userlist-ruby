@@ -42,15 +42,6 @@ RSpec.describe Userlist::Push::Strategies::Threaded::Worker do
     queue.push([:delete, '/user/identifier'])
   end
 
-  it 'should retry failed responses' do
-    payload = { foo: :bar }
-
-    expect(client).to receive(:post) { double(code: '500') }.exactly(11).times
-    expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
-
-    queue.push([:post, '/users', payload])
-  end
-
   it 'should log failed requests' do
     allow(client).to receive(:post).and_raise(StandardError)
     queue.push([:post, '/events', payload])

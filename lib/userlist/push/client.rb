@@ -8,7 +8,14 @@ module Userlist
     class Client
       include Userlist::Logging
 
-      def initialize(config = {})        
+      HTTP_STATUS = {
+        ok: (200..299),
+        server_error: (500..599),
+        timeout: 408,
+        rate_limit: 429
+      }.freeze
+
+      def initialize(config = {})
         @config = Userlist.config.merge(config)
 
         raise Userlist::ConfigurationError, :push_key unless @config.push_key
@@ -33,7 +40,7 @@ module Userlist
 
     private
 
-      attr_reader :config, :status, :last_error
+      attr_reader :config, :status
 
       def http
         @http ||= begin
@@ -60,7 +67,7 @@ module Userlist
           log_response(response)
         end
 
-        handle_response response
+        handle_response(response)
       end
 
       def build_request(method, path, payload)
@@ -73,22 +80,61 @@ module Userlist
       end
 
       def handle_response(response)
-        status = response.code.to_i
-        
-        return response if status.between?(200, 299)
-        
-        case status
-        when 500..599 then raise Userlist::ServerError, "Server error: #{status}"
-        when 408 then raise Userlist::TimeoutError, 'Request timed out'
-        when 429 then raise Userlist::TooManyRequestsError, 'Rate limited'
-        else raise Userlist::Error, "HTTP #{status}: #{response.message}"
-        end
+        @status = response.code.to_i
+        return response if ok?
+
+        raise_error_for_status(status)
       end
 
-      def retry?(error)
-        error.is_a?(Userlist::ServerError) || 
-          error.is_a?(Userlist::TooManyRequestsError) ||
-          error.is_a?(Userlist::TimeoutError)
+      def raise_error_for_status(status)
+        error_class = error_class_for_status(status)
+        message = error_message_for_status(status)
+        raise error_class, message
+      end
+
+      def error_class_for_status(status)
+        error_mapping[status_type(status)] || Userlist::ServerError
+      end
+
+      def error_message_for_status(status)
+        message = error_messages[status_type(status)] || 'HTTP error'
+        "#{message}: #{status}"
+      end
+
+      def status_type(status)
+        HTTP_STATUS.find { |type, range| range === status }&.first
+      end
+
+      def error_mapping
+        {
+          server_error: Userlist::ServerError,
+          timeout: Userlist::TimeoutError,
+          rate_limit: Userlist::TooManyRequestsError
+        }
+      end
+
+      def error_messages
+        {
+          server_error: 'Server error',
+          timeout: 'Request timeout',
+          rate_limit: 'Rate limit exceeded'
+        }
+      end
+
+      def ok?
+        HTTP_STATUS[:ok].include?(status)
+      end
+
+      def error?
+        [:server_error, :rate_limit, :timeout].include?(status_type(status))
+      end
+
+      def retryable
+        @retryable ||= Userlist::Retryable.new do |response|
+          @status = response.code.to_i
+
+          error?
+        end
       end
 
       def log_request(request)
@@ -106,34 +152,6 @@ module Userlist
 
       def token
         config.push_key
-      end
-
-      def retryable
-        @retryable ||= Userlist::Retryable.new do |response|
-          @status = response.code.to_i
-      
-          error?
-        end
-      end
-
-      def ok?
-        status.between?(200, 299)
-      end
-
-      def error?
-        server_error? || rate_limited? || timeout?
-      end
-      
-      def server_error?
-        status.between?(500, 599)
-      end
-      
-      def rate_limited?
-        status == 429
-      end
-
-      def timeout?
-        status == 408
       end
     end
   end

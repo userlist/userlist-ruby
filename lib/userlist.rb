@@ -9,13 +9,9 @@ require 'userlist/token'
 
 module Userlist
   class Error < StandardError; end
-
   class ArgumentError < Error; end
-
   class ServerError < Error; end
-
   class TooManyRequestsError < Error; end
-
   class TimeoutError < Error; end
 
   class ConfigurationError < Error
@@ -24,7 +20,7 @@ module Userlist
     def initialize(key)
       @key = key.to_sym
 
-      super <<~MESSAGE
+      super(<<~MESSAGE)
         Missing required configuration value for `#{key}`
 
         Please set a value for `#{key}` using an environment variable:

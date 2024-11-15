@@ -2,6 +2,16 @@ module Userlist
   class Push
     module Strategies
       class Threaded
+        # Worker processes requests from a queue in a separate thread.
+        # It forwards requests to the Userlist::Push::Client which handles:
+        # - HTTP communication
+        # - Retries for failed requests (500s, timeouts, rate limits)
+        # - Error handling for HTTP-related issues
+        #
+        # The worker itself only handles fatal errors to:
+        # - Prevent the worker thread from crashing
+        # - Keep processing the queue
+        # - Log errors for debugging
         class Worker
           include Userlist::Logging
 
@@ -22,7 +32,7 @@ module Userlist
                 method, *args = *queue.pop
                 break if method == :stop
 
-                retryable.attempt { client.public_send(method, *args) }
+                client.public_send(method, *args)
               rescue StandardError => e
                 logger.error "Failed to deliver payload: [#{e.class.name}] #{e.message}"
               end
@@ -43,14 +53,6 @@ module Userlist
 
           def client
             @client ||= Userlist::Push::Client.new(config)
-          end
-
-          def retryable
-            @retryable ||= Userlist::Retryable.new do |response|
-              status = response.code.to_i
-
-              status >= 500 || status == 429
-            end
           end
         end
       end
