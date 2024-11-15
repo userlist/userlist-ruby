@@ -46,9 +46,10 @@ module Userlist
           end
 
           def retryable
-            @retryable ||= Userlist::Retryable.new do |response|
-              status = response.code.to_i
+            @retryable ||= Userlist::Retryable.new do |error|
+              next false unless error.is_a?(Userlist::RequestError)
 
+              status = error.status
               status >= 500 || status == 429
             end
           end

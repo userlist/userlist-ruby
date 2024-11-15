@@ -21,15 +21,17 @@ module Userlist
 
     def attempt
       (0..@retries).each do |attempt|
-        if attempt.positive?
-          milliseconds = delay(attempt)
-          logger.debug "Retrying in #{milliseconds}ms, #{@retries - attempt} retries left"
-          sleep(milliseconds / 1000.0)
+        begin
+          if attempt.positive?
+            milliseconds = delay(attempt)
+            logger.debug "Retrying in #{milliseconds}ms, #{@retries - attempt} retries left"
+            sleep(milliseconds / 1000.0)
+          end
+
+          return yield
+        rescue StandardError => e
+          raise e unless retry?(e)
         end
-
-        result = yield
-
-        return result unless retry?(result)
       end
 
       logger.debug 'Retries exhausted, giving up'

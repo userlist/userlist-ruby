@@ -61,6 +61,13 @@ RSpec.describe Userlist::Push::Client do
 
       subject.get('/events')
     end
+
+    it 'should raise an error when the request fails' do
+      stub_request(:get, 'https://endpoint.test.local/events')
+        .to_return(status: 500)
+
+      expect { subject.get('/events') }.to raise_error(Userlist::RequestError)
+    end
   end
 
   describe '#post' do
@@ -79,6 +86,13 @@ RSpec.describe Userlist::Push::Client do
         .to_return(status: 202)
 
       subject.post('/events', payload)
+    end
+
+    it 'should raise an error when the request fails' do
+      stub_request(:post, 'https://endpoint.test.local/events')
+        .to_return(status: 500)
+
+      expect { subject.post('/events') }.to raise_error(Userlist::RequestError)
     end
   end
 
@@ -99,6 +113,13 @@ RSpec.describe Userlist::Push::Client do
 
       subject.put('/events', payload)
     end
+
+    it 'should raise an error when the request fails' do
+      stub_request(:put, 'https://endpoint.test.local/events')
+        .to_return(status: 500)
+
+      expect { subject.put('/events') }.to raise_error(Userlist::RequestError)
+    end
   end
 
   describe '#delete' do
@@ -117,6 +138,13 @@ RSpec.describe Userlist::Push::Client do
         .to_return(status: 202)
 
       subject.delete('/events', payload)
+    end
+
+    it 'should raise an error when the request fails' do
+      stub_request(:delete, 'https://endpoint.test.local/events')
+        .to_return(status: 500)
+
+      expect { subject.delete('/events') }.to raise_error(Userlist::RequestError)
     end
   end
 end

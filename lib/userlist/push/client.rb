@@ -62,6 +62,8 @@ module Userlist
 
         logger.debug "Recieved #{response.code} #{response.message} with body #{response.body}"
 
+        raise(Userlist::RequestError, response) if response.code.to_i >= 400
+
         response
       end
 
