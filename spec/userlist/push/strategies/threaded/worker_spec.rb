@@ -45,7 +45,16 @@ RSpec.describe Userlist::Push::Strategies::Threaded::Worker do
   it 'should retry failed responses' do
     payload = { foo: :bar }
 
-    expect(client).to receive(:post) { double(code: '500') }.exactly(11).times
+    expect(client).to receive(:post) { raise Userlist::RequestError, double(code: '500', body: 'Internal Error') }.exactly(11).times
+    expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
+
+    queue.push([:post, '/users', payload])
+  end
+
+  it 'should retry on timeouts' do
+    payload = { foo: :bar }
+
+    expect(client).to receive(:post) { raise Userlist::TimeoutError }.exactly(11).times
     expect_any_instance_of(Userlist::Retryable).to receive(:sleep).exactly(10).times
 
     queue.push([:post, '/users', payload])

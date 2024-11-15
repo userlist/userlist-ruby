@@ -49,18 +49,35 @@ module Userlist
       end
 
       def request(method, path, payload = nil)
+        request = build_request(method, path, payload)
+
+        logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
+
+        response = process_request(request)
+
+        logger.debug "Recieved #{response.code} #{response.message} with body #{response.body}"
+
+        handle_response(response)
+      end
+
+      def build_request(method, path, payload)
         request = method.new(path)
         request['Accept'] = 'application/json'
         request['Authorization'] = "Push #{token}"
         request['Content-Type'] = 'application/json; charset=UTF-8'
         request.body = JSON.generate(payload) if payload
+        request
+      end
 
-        logger.debug "Sending #{request.method} to #{URI.join(endpoint, request.path)} with body #{request.body}"
-
+      def process_request(request)
         http.start unless http.started?
-        response = http.request(request)
+        http.request(request)
+      rescue Timeout::Error => e
+        raise Userlist::TimeoutError, e.message
+      end
 
-        logger.debug "Recieved #{response.code} #{response.message} with body #{response.body}"
+      def handle_response(response)
+        raise(Userlist::RequestError, response) if response.code.to_i >= 400
 
         response
       end

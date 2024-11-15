@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Userlist::Retryable do
-  subject { described_class.new(&:!) }
+  subject { described_class.new { true } }
 
   before do
     allow_any_instance_of(described_class).to receive(:sleep)
@@ -12,7 +12,6 @@ RSpec.describe Userlist::Retryable do
 
     subject.attempt do
       attempts += 1
-      true
     end
 
     expect(attempts).to eq(1)
@@ -23,7 +22,8 @@ RSpec.describe Userlist::Retryable do
 
     subject.attempt do
       attempts += 1
-      attempts > 5
+
+      raise Userlist::Error unless attempts > 5
     end
 
     expect(attempts).to eq(6)
@@ -34,7 +34,8 @@ RSpec.describe Userlist::Retryable do
 
     subject.attempt do
       attempts += 1
-      false
+
+      raise Userlist::Error
     end
 
     expect(attempts).to eq(11)
@@ -43,6 +44,6 @@ RSpec.describe Userlist::Retryable do
   it 'should wait between the attempts' do
     expect(subject).to receive(:sleep).exactly(10).times
 
-    subject.attempt { false }
+    subject.attempt { raise Userlist::Error }
   end
 end

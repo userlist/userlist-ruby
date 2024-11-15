@@ -18,7 +18,7 @@ module Userlist
     def initialize(key)
       @key = key.to_sym
 
-      super <<~MESSAGE
+      super(<<~MESSAGE)
         Missing required configuration value for `#{key}`
 
         Please set a value for `#{key}` using an environment variable:
@@ -31,6 +31,22 @@ module Userlist
             config.#{key} = 'some-value-here'
           end
       MESSAGE
+    end
+  end
+
+  class TimeoutError < Error; end
+
+  class RequestError < Error
+    attr_reader :response
+
+    def initialize(response)
+      super("Request failed with status #{response.code}: #{response.body}")
+
+      @response = response
+    end
+
+    def status
+      @response.code.to_i
     end
   end
 

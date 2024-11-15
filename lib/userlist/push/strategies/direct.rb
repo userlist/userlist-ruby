@@ -19,11 +19,7 @@ module Userlist
         end
 
         def retryable
-          @retryable ||= Userlist::Retryable.new do |response|
-            status = response.code.to_i
-
-            status >= 500 || status == 429
-          end
+          @retryable ||= Userlist::Retryable.new
         end
       end
     end
