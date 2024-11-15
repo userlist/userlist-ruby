@@ -2,7 +2,8 @@
 
 ## Unreleased (main)
 
-- Updates ActiveJob Worker to retry on Timeout::Error with polynomially longer wait times, up to 10 attempts
+- Updates ActiveJob Worker to retry on errors with polynomially longer wait times, up to 10 attempts
+- Improve internal error handling to rely on exceptions
 
 ## v0.9.0 (2024-03-19)
 
