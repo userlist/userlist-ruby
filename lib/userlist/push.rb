@@ -12,13 +12,14 @@ require 'userlist/push/user'
 require 'userlist/push/company'
 require 'userlist/push/relationship'
 require 'userlist/push/event'
+require 'userlist/push/message'
 
 require 'userlist/push/serializer'
 
 module Userlist
   class Push
     class << self
-      [:event, :track, :user, :identify, :company, :users, :events, :companies, :relationships].each do |method|
+      [:event, :track, :user, :identify, :company, :message, :users, :events, :companies, :relationships, :messages].each do |method|
         define_method(method) { |*args| default_push_instance.send(method, *args) }
       end
 
@@ -52,6 +53,10 @@ module Userlist
       @relationships ||= Relation.new(self, Relationship, [Operations::Create, Operations::Delete])
     end
 
+    def messages
+      @messages ||= Relation.new(self, Message, [Operations::Create])
+    end
+
     def event(payload = {})
       events.create(payload)
     end
@@ -62,6 +67,10 @@ module Userlist
 
     def company(payload = {})
       companies.create(payload)
+    end
+
+    def message(payload = {})
+      messages.create(payload)
     end
 
     alias track event

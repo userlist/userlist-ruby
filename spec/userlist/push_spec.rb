@@ -160,4 +160,36 @@ RSpec.describe Userlist::Push do
       subject.company(payload)
     end
   end
+
+  describe '#messages' do
+    let(:relation) { subject.messages }
+
+    it 'should return a relation' do
+      expect(relation).to be_an_instance_of(Userlist::Push::Relation)
+      expect(relation.type).to eq(Userlist::Push::Message)
+    end
+
+    it 'should support the create operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    end
+  end
+
+  describe '#message' do
+    let(:payload) do
+      {
+        template: 'template-identifier',
+        user: 'user-identifier',
+        properties: {
+          value: '$100.00'
+        }
+      }
+    end
+
+    let(:relation) { subject.messages }
+
+    it 'should delegate the call to the relation\'s create method' do
+      expect(relation).to receive(:create).with(payload)
+      subject.message(payload)
+    end
+  end
 end
