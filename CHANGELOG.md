@@ -4,6 +4,7 @@
 
 - Updates ActiveJob Worker to retry on errors with polynomially longer wait times, up to 10 attempts
 - Improve internal error handling to rely on exceptions
+- Adds support for messages
 
 ## v0.9.0 (2024-03-19)
 
