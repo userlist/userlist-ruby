@@ -1,4 +1,4 @@
-# Userlist for Ruby  [![Build Status](https://github.com/userlist/userlist-ruby/workflows/Tests/badge.svg)](https://github.com/userlist/userlist-ruby)
+# Userlist for Ruby [![Build Status](https://github.com/userlist/userlist-ruby/workflows/Tests/badge.svg)](https://github.com/userlist/userlist-ruby)
 
 This gem helps with integrating [Userlist](https://userlist.com) into Ruby applications.
 
@@ -184,6 +184,23 @@ Userlist::Push.events.push(
     project_name: 'Example project'
   }
 )
+```
+
+### Sending Transactional Messages
+
+To send transactional messages, use the `Userlist::Push.messages.push` method.
+
+```ruby
+message = {
+  user: 'user-1',
+  template: 'welcome-email',
+  properties: {
+    account_name: 'Example, Inc.',
+    billing_plan: 'Pro'
+  }
+}
+
+Userlist::Push.push(message)
 ```
 
 ### Tokens for in-app messages
