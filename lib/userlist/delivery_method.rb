@@ -1,6 +1,5 @@
 class Userlist::DeliveryMethod
-  attr_reader :userlist
-  attr_reader :settings
+  attr_reader :userlist, :settings
 
   def initialize(settings = {})
     @settings = settings
@@ -26,7 +25,7 @@ private
   end
 
   def serialize_address(address)
-    address.first.to_s
+    Array(address).map(&:to_s)
   end
 
   def serialize_body(body)

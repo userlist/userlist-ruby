@@ -27,8 +27,8 @@ RSpec.describe Userlist::DeliveryMethod do
 
       it 'delivers the message correctly' do
         expected_payload = {
-          to: 'user@example.com',
-          from: 'sender@example.com',
+          to: ['user@example.com'],
+          from: ['sender@example.com'],
           subject: 'Test Subject',
           body: { type: :text, content: 'Hello world' },
           theme: nil
@@ -55,8 +55,8 @@ RSpec.describe Userlist::DeliveryMethod do
 
       it 'delivers the message correctly' do
         expected_payload = {
-          to: 'user@example.com',
-          from: 'sender@example.com',
+          to: ['user@example.com'],
+          from: ['sender@example.com'],
           subject: 'Test Subject',
           body: { type: :html, content: '<p>Hello world</p>' },
           theme: nil
@@ -87,8 +87,8 @@ RSpec.describe Userlist::DeliveryMethod do
 
       it 'delivers the message correctly' do
         expected_payload = {
-          to: 'user@example.com',
-          from: 'sender@example.com',
+          to: ['user@example.com'],
+          from: ['sender@example.com'],
           subject: 'Test Subject',
           body: {
             type: :multipart,
