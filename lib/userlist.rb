@@ -6,6 +6,7 @@ require 'userlist/logging'
 require 'userlist/retryable'
 require 'userlist/push'
 require 'userlist/token'
+require 'userlist/delivery_method'
 
 module Userlist
   class Error < StandardError; end
