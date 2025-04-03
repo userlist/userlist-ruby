@@ -200,7 +200,7 @@ message = {
   }
 }
 
-Userlist::Push.push(message)
+Userlist::Push.messages.push(message)
 ```
 
 ### Tokens for in-app messages
