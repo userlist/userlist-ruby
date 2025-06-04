@@ -46,8 +46,8 @@ module Userlist
             def #{name}                                                             # def companies
               relationship = self.class.relationships[:#{name}]                     #   relationship = self.class.relationships[:companies]
                                                                                     #
-              ResourceCollection.new(payload[:#{name}], relationship, self, config) # ResourceCollection.new(payload[:companies], relationship, self, config)
-            end                                                                     #
+              ResourceCollection.new(payload[:#{name}], relationship, self, config) #   ResourceCollection.new(payload[:companies], relationship, self, config)
+            end                                                                     # end
           RUBY
         end
 
