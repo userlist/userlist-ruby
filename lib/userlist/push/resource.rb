@@ -58,13 +58,14 @@ module Userlist
         end
       end
 
-      attr_reader :payload, :config
+      attr_reader :payload, :config, :context
 
       def initialize(payload = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required payload' unless payload
 
         @payload = payload
         @config = config
+        @context = :push
       end
 
       def respond_to_missing?(method, include_private = false)
@@ -73,7 +74,7 @@ module Userlist
       end
 
       def to_hash
-        Serializer.serialize(self, context: :push)
+        Serializer.serialize(self, context: context)
       end
       alias to_h to_hash
 
@@ -104,6 +105,12 @@ module Userlist
 
       def push?
         true
+      end
+
+      def for_context(context)
+        dup.tap do |instance|
+          instance.instance_variable_set(:@context, context)
+        end
       end
 
     private

@@ -5,8 +5,9 @@ module Userlist
         module ClassMethods
           def delete(payload = {}, config = self.config)
             return false unless resource = from_payload(payload, config)
+            return false unless resource.delete?
 
-            strategy.call(:delete, endpoint, resource) if resource.delete?
+            strategy.call(:delete, endpoint, resource.for_context(:delete))
           end
         end
 

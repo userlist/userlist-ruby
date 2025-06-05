@@ -5,8 +5,9 @@ module Userlist
         module ClassMethods
           def create(payload = {}, config = self.config)
             return false unless resource = from_payload(payload, config)
+            return false unless resource.create?
 
-            strategy.call(:post, endpoint, resource) if resource.create?
+            strategy.call(:post, endpoint, resource.for_context(:create))
           end
 
           alias push create

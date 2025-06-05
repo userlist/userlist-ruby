@@ -36,6 +36,25 @@ RSpec.describe Userlist::Push::Operations::Create do
         expect(strategy).to receive(:call).with(:post, '/users', resource)
         relation.create(payload)
       end
+
+      it 'should set the context to :create' do
+        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :create })
+        relation.create(payload)
+      end
+    end
+
+    context 'when given a resource instance' do
+      let(:payload) { resource_type.from_payload({ identifier: 'identifier' }) }
+
+      it 'should send the request to the endpoint' do
+        expect(strategy).to receive(:call).with(:post, '/users', resource)
+        relation.create(payload)
+      end
+
+      it 'should set the context to :create' do
+        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :create })
+        relation.create(payload)
+      end
     end
 
     context 'when given an identifier' do

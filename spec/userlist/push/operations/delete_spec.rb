@@ -17,6 +17,11 @@ RSpec.describe Userlist::Push::Operations::Delete do
         expect(strategy).to receive(:call).with(:delete, '/users', resource)
         relation.delete(payload)
       end
+
+      it 'should set the context to :create' do
+        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
+        relation.delete(payload)
+      end
     end
 
     context 'when given a payload hash' do
@@ -26,6 +31,25 @@ RSpec.describe Userlist::Push::Operations::Delete do
 
       it 'should send the request to the endpoint' do
         expect(strategy).to receive(:call).with(:delete, '/users', resource)
+        relation.delete(payload)
+      end
+
+      it 'should set the context to :create' do
+        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
+        relation.delete(payload)
+      end
+    end
+
+    context 'when given a resource instance' do
+      let(:payload) { resource_type.from_payload({ identifier: identifier }) }
+
+      it 'should send the request to the endpoint' do
+        expect(strategy).to receive(:call).with(:delete, '/users', resource)
+        relation.delete(payload)
+      end
+
+      it 'should set the context to :create' do
+        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
         relation.delete(payload)
       end
     end
