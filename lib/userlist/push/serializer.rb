@@ -19,7 +19,10 @@ module Userlist
       end
 
       def serialize?(resource)
-        resource.public_send("#{context}?")
+        method_name = "#{context}?"
+
+        resource.respond_to?(method_name) &&
+          resource.public_send(method_name)
       end
 
     private

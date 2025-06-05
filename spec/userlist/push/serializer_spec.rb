@@ -76,12 +76,36 @@ RSpec.describe Userlist::Push::Serializer do
       end
 
       context 'when serializing the user is not allowed' do
-        before do
-          allow_any_instance_of(Userlist::Push::User).to receive(:push?).and_return(false)
+        context 'when the context is push' do
+          subject { described_class.new(context: :push) }
+
+          before do
+            expect_any_instance_of(Userlist::Push::User).to receive(:push?).and_return(false)
+          end
+
+          it 'should return no payload' do
+            expect(payload).to_not be
+          end
         end
 
-        it 'should return no payload' do
-          expect(payload).to_not be
+        context 'when the context is delete' do
+          subject { described_class.new(context: :delete) }
+
+          before do
+            expect_any_instance_of(Userlist::Push::User).to receive(:delete?).and_return(false)
+          end
+
+          it 'should return no payload' do
+            expect(payload).to_not be
+          end
+        end
+
+        context 'when the context is unsupported' do
+          subject { described_class.new(context: :unsupported) }
+
+          it 'should return no payload' do
+            expect(payload).to_not be
+          end
         end
       end
 
