@@ -12,6 +12,10 @@ module Userlist
         resource
       end
 
+      def serialize?(resource)
+        resource.push?
+      end
+
     private
 
       def serialize_resource(resource)
@@ -19,7 +23,7 @@ module Userlist
 
         serialized_resources << resource
 
-        return unless resource.push?
+        return unless serialize?(resource)
 
         serialized = {}
 
