@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Userlist::Push::Serializer do
+  subject { described_class.new(context: :push) }
+
   let(:user) do
     Userlist::Push::User.new(
       identifier: 'user-identifier',

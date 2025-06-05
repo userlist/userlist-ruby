@@ -3,8 +3,14 @@ require 'set'
 module Userlist
   class Push
     class Serializer
-      def self.serialize(resource)
-        new.serialize(resource)
+      def self.serialize(resource, **options)
+        new(**options).serialize(resource)
+      end
+
+      attr_reader :context
+
+      def initialize(context:)
+        @context = context
       end
 
       def serialize(resource)
@@ -13,7 +19,7 @@ module Userlist
       end
 
       def serialize?(resource)
-        resource.push?
+        resource.public_send("#{context}?")
       end
 
     private

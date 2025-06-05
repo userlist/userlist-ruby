@@ -73,7 +73,7 @@ module Userlist
       end
 
       def to_hash
-        Serializer.serialize(self)
+        Serializer.serialize(self, context: :push)
       end
       alias to_h to_hash
 
