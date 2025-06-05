@@ -1,7 +1,7 @@
 module Userlist
   class Push
     class Event < Resource
-      include Operations::Create
+      include Operations::Push
 
       has_one :user, type: 'Userlist::Push::User'
       has_one :company, type: 'Userlist::Push::Company'

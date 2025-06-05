@@ -1,7 +1,7 @@
 module Userlist
   class Push
     class Company < Resource
-      include Operations::Create
+      include Operations::Push
       include Operations::Delete
 
       def self.endpoint

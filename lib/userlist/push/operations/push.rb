@@ -1,24 +1,21 @@
 module Userlist
   class Push
     module Operations
-      module Create
+      module Push
         module ClassMethods
-          def create(payload = {}, config = self.config)
+          def push(payload = {}, config = self.config)
             return false unless resource = from_payload(payload, config)
-            return false unless resource.create?
+            return false unless resource.push?
 
-            strategy.call(:post, endpoint, resource.for_context(:create))
+            strategy.call(:post, endpoint, resource.for_context(:push))
           end
 
-          alias push create
+          alias create push
+          alias update push
         end
 
         def self.included(base)
           base.extend(ClassMethods)
-        end
-
-        def create?
-          push?
         end
       end
     end

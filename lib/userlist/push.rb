@@ -5,7 +5,7 @@ require 'userlist/push/resource'
 require 'userlist/push/resource_collection'
 require 'userlist/push/relation'
 
-require 'userlist/push/operations/create'
+require 'userlist/push/operations/push'
 require 'userlist/push/operations/delete'
 
 require 'userlist/push/user'
@@ -38,39 +38,39 @@ module Userlist
     attr_reader :config, :strategy
 
     def events
-      @events ||= Relation.new(self, Event, [Operations::Create])
+      @events ||= Relation.new(self, Event, [Operations::Push])
     end
 
     def users
-      @users ||= Relation.new(self, User, [Operations::Create, Operations::Delete])
+      @users ||= Relation.new(self, User, [Operations::Push, Operations::Delete])
     end
 
     def companies
-      @companies ||= Relation.new(self, Company, [Operations::Create, Operations::Delete])
+      @companies ||= Relation.new(self, Company, [Operations::Push, Operations::Delete])
     end
 
     def relationships
-      @relationships ||= Relation.new(self, Relationship, [Operations::Create, Operations::Delete])
+      @relationships ||= Relation.new(self, Relationship, [Operations::Push, Operations::Delete])
     end
 
     def messages
-      @messages ||= Relation.new(self, Message, [Operations::Create])
+      @messages ||= Relation.new(self, Message, [Operations::Push])
     end
 
     def event(payload = {})
-      events.create(payload)
+      events.push(payload)
     end
 
     def user(payload = {})
-      users.create(payload)
+      users.push(payload)
     end
 
     def company(payload = {})
-      companies.create(payload)
+      companies.push(payload)
     end
 
     def message(payload = {})
-      messages.create(payload)
+      messages.push(payload)
     end
 
     alias track event

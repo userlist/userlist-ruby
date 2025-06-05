@@ -1,7 +1,7 @@
 module Userlist
   class Push
     class User < Resource
-      include Operations::Create
+      include Operations::Push
       include Operations::Delete
 
       has_many :relationships, type: 'Userlist::Push::Relationship', inverse: :user

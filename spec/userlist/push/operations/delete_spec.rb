@@ -18,7 +18,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
         relation.delete(payload)
       end
 
-      it 'should set the context to :create' do
+      it 'should set the context to :delete' do
         expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
         relation.delete(payload)
       end
@@ -34,7 +34,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
         relation.delete(payload)
       end
 
-      it 'should set the context to :create' do
+      it 'should set the context to :delete' do
         expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
         relation.delete(payload)
       end
@@ -48,7 +48,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
         relation.delete(payload)
       end
 
-      it 'should set the context to :create' do
+      it 'should set the context to :delete' do
         expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
         relation.delete(payload)
       end

@@ -45,8 +45,8 @@ RSpec.describe Userlist::Push do
       expect(relation.type).to eq(Userlist::Push::User)
     end
 
-    it 'should support the create operation' do
-      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    it 'should support the push operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Push::ClassMethods)
     end
 
     it 'should support the delete operation' do
@@ -62,8 +62,8 @@ RSpec.describe Userlist::Push do
       expect(relation.type).to eq(Userlist::Push::Company)
     end
 
-    it 'should support the create operation' do
-      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    it 'should support the push operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Push::ClassMethods)
     end
 
     it 'should support the delete operation' do
@@ -79,8 +79,8 @@ RSpec.describe Userlist::Push do
       expect(relation.type).to eq(Userlist::Push::Relationship)
     end
 
-    it 'should support the create operation' do
-      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    it 'should support the push operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Push::ClassMethods)
     end
   end
 
@@ -92,8 +92,8 @@ RSpec.describe Userlist::Push do
       expect(relation.type).to eq(Userlist::Push::Event)
     end
 
-    it 'should support the create operation' do
-      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    it 'should support the push operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Push::ClassMethods)
     end
   end
 
@@ -110,8 +110,8 @@ RSpec.describe Userlist::Push do
 
     let(:relation) { subject.events }
 
-    it 'should delegate the call to the relation\'s create method' do
-      expect(relation).to receive(:create).with(payload)
+    it 'should delegate the call to the relation\'s push method' do
+      expect(relation).to receive(:push).with(payload)
       subject.event(payload)
     end
 
@@ -133,8 +133,8 @@ RSpec.describe Userlist::Push do
 
     let(:relation) { subject.users }
 
-    it 'should delegate the call to the relation\'s create method' do
-      expect(relation).to receive(:create).with(payload)
+    it 'should delegate the call to the relation\'s push method' do
+      expect(relation).to receive(:push).with(payload)
       subject.user(payload)
     end
 
@@ -155,8 +155,8 @@ RSpec.describe Userlist::Push do
 
     let(:relation) { subject.companies }
 
-    it 'should delegate the call to the relation\'s create method' do
-      expect(relation).to receive(:create).with(payload)
+    it 'should delegate the call to the relation\'s push method' do
+      expect(relation).to receive(:push).with(payload)
       subject.company(payload)
     end
   end
@@ -169,8 +169,8 @@ RSpec.describe Userlist::Push do
       expect(relation.type).to eq(Userlist::Push::Message)
     end
 
-    it 'should support the create operation' do
-      expect(relation).to be_kind_of(Userlist::Push::Operations::Create::ClassMethods)
+    it 'should support the push operation' do
+      expect(relation).to be_kind_of(Userlist::Push::Operations::Push::ClassMethods)
     end
   end
 
@@ -187,8 +187,8 @@ RSpec.describe Userlist::Push do
 
     let(:relation) { subject.messages }
 
-    it 'should delegate the call to the relation\'s create method' do
-      expect(relation).to receive(:create).with(payload)
+    it 'should delegate the call to the relation\'s push method' do
+      expect(relation).to receive(:push).with(payload)
       subject.message(payload)
     end
   end

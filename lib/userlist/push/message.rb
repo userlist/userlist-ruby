@@ -1,7 +1,7 @@
 module Userlist
   class Push
     class Message < Resource
-      include Operations::Create
+      include Operations::Push
 
       has_one :user, type: 'Userlist::Push::User'
 

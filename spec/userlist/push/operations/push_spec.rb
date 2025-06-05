@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Userlist::Push::Operations::Create do
+RSpec.describe Userlist::Push::Operations::Push do
   let(:resource_type) { Userlist::Push::User }
   let(:relation) { Userlist::Push::Relation.new(scope, resource_type, [described_class]) }
   let(:scope) { Userlist::Push.new(push_strategy: strategy) }
@@ -17,29 +17,29 @@ RSpec.describe Userlist::Push::Operations::Create do
     }
   end
 
-  describe '.create' do
+  describe '.push' do
     before do
       allow(strategy).to receive(:call)
     end
 
     it 'should create a new instance of the resource_type' do
       expect(resource_type).to receive(:new).with(payload, scope.config).and_return(resource)
-      relation.create(payload)
+      relation.push(payload)
     end
 
     it 'should be aliased as #push' do
-      expect(relation.method(:push)).to eq(relation.method(:create))
+      expect(relation.method(:push)).to eq(relation.method(:push))
     end
 
     context 'when given a payload hash' do
       it 'should send the payload to the endpoint' do
         expect(strategy).to receive(:call).with(:post, '/users', resource)
-        relation.create(payload)
+        relation.push(payload)
       end
 
-      it 'should set the context to :create' do
-        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :create })
-        relation.create(payload)
+      it 'should set the context to :push' do
+        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :push })
+        relation.push(payload)
       end
     end
 
@@ -48,12 +48,12 @@ RSpec.describe Userlist::Push::Operations::Create do
 
       it 'should send the request to the endpoint' do
         expect(strategy).to receive(:call).with(:post, '/users', resource)
-        relation.create(payload)
+        relation.push(payload)
       end
 
-      it 'should set the context to :create' do
-        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :create })
-        relation.create(payload)
+      it 'should set the context to :push' do
+        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :push })
+        relation.push(payload)
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe Userlist::Push::Operations::Create do
 
       it 'should send a simple payload to the endpoint' do
         expect(strategy).to receive(:call).with(:post, '/users', resource)
-        relation.create(payload[:identifier])
+        relation.push(payload[:identifier])
       end
     end
 
@@ -73,18 +73,18 @@ RSpec.describe Userlist::Push::Operations::Create do
 
       it 'should not send a payload to the endpoint' do
         expect(strategy).to_not receive(:call)
-        relation.create(payload)
+        relation.push(payload)
       end
     end
 
     context 'when the operation is not permitted' do
       before do
-        allow_any_instance_of(resource_type).to receive(:create?).and_return(false)
+        allow_any_instance_of(resource_type).to receive(:push?).and_return(false)
       end
 
       it 'should not send a payload to the endpoint' do
         expect(strategy).to_not receive(:call)
-        relation.create(payload)
+        relation.push(payload)
       end
     end
 
@@ -94,8 +94,20 @@ RSpec.describe Userlist::Push::Operations::Create do
       end
 
       it 'should not allow the operation' do
-        expect(resource.create?).to be(false)
+        expect(resource.push?).to be(false)
       end
+    end
+  end
+
+  describe '.create' do
+    it 'should be an alias for push' do
+      expect(relation.method(:create)).to eq(relation.method(:push))
+    end
+  end
+
+  describe '.update' do
+    it 'should be an alias for push' do
+      expect(relation.method(:update)).to eq(relation.method(:push))
     end
   end
 end

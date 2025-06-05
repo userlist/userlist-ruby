@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Userlist::Push::Relation do
   let(:scope) { double(:scope, config: config) }
   let(:resource_type) { double(:resource_type, endpoint: '/messages') }
-  let(:operations) { [Userlist::Push::Operations::Create, Userlist::Push::Operations::Delete] }
+  let(:operations) { [Userlist::Push::Operations::Push, Userlist::Push::Operations::Delete] }
   let(:config) { Userlist.config.merge(push_strategy: :null) }
 
   subject { described_class.new(scope, resource_type, operations) }
