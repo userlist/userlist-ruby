@@ -113,7 +113,7 @@ RSpec.describe Userlist::Push::Event do
 
   context 'when there is a legacy occured_at property' do
     let(:payload) do
-      super().merge(occured_at: timestamp )
+      super().merge(occured_at: timestamp)
     end
 
     let(:timestamp) { Time.parse('2018-01-01T00:00:00Z') }

@@ -27,7 +27,7 @@ module Userlist
         def options
           @options ||= begin
             options = config.push_strategy_options || {}
-            options.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
+            options.transform_keys(&:to_sym)
           end
         end
 

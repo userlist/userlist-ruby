@@ -75,12 +75,12 @@ module Userlist
       key?(name.to_sym) || super
     end
 
-    def method_missing(name, *args, &block)
+    def method_missing(name, ...)
       if respond_to_missing?(name)
         name = name.to_s
         method = name =~ /=$/ ? :[]= : :[]
         name = name.sub(/=$/, '').to_sym
-        send(method, name, *args, &block)
+        send(method, name, ...)
       else
         super
       end

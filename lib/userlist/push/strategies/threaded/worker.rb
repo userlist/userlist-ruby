@@ -18,14 +18,12 @@ module Userlist
             logger.info 'Starting worker thread...'
 
             loop do
-              begin
-                method, *args = *queue.pop
-                break if method == :stop
+              method, *args = *queue.pop
+              break if method == :stop
 
-                retryable.attempt { client.public_send(method, *args) }
-              rescue StandardError => e
-                logger.error "Failed to deliver payload: [#{e.class.name}] #{e.message}"
-              end
+              retryable.attempt { client.public_send(method, *args) }
+            rescue StandardError => e
+              logger.error "Failed to deliver payload: [#{e.class.name}] #{e.message}"
             end
 
             logger.info "Worker thread exited with #{queue.size} tasks still in the queue..."
