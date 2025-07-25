@@ -192,6 +192,119 @@ RSpec.describe Userlist::Push::Serializer do
           )
         end
       end
+
+      describe 'include option' do
+        let(:other_user) do
+          Userlist::Push::User.new(
+            identifier: 'other-user-identifier',
+            email: 'bar@example.com'
+          )
+        end
+
+        let(:other_relationship) do
+          Userlist::Push::Relationship.new(
+            user: other_user,
+            company: company,
+            properties: {
+              role: 'member'
+            }
+          )
+        end
+
+        before do
+          company.relationships = [relationship, other_relationship]
+        end
+
+        context 'when the include option is set to false' do
+          subject { described_class.new(context: :push, include: false) }
+
+          it 'should not include relationships' do
+            expect(payload).to eq(
+              identifier: 'user-identifier',
+              email: 'foo@example.com',
+              signed_up_at: nil
+            )
+          end
+        end
+
+        context 'when the include option is set to :relationships' do
+          subject { described_class.new(context: :push, include: :relationships) }
+
+          it 'should include relationships' do
+            expect(payload).to eq(
+              identifier: 'user-identifier',
+              email: 'foo@example.com',
+              signed_up_at: nil,
+              relationships: [
+                {
+                  user: 'user-identifier',
+                  company: 'company-identifier',
+                  properties: {
+                    role: 'admin'
+                  }
+                }
+              ]
+            )
+          end
+        end
+
+        context 'when the include option is set to { relationships: [:company] }' do
+          subject { described_class.new(context: :push, include: [{ relationships: [{ company: [] }] }]) }
+
+          it 'should include relationships' do
+            expect(payload).to eq(
+              identifier: 'user-identifier',
+              email: 'foo@example.com',
+              signed_up_at: nil,
+              relationships: [
+                {
+                  user: 'user-identifier',
+                  company: {
+                    identifier: 'company-identifier',
+                    name: 'Example, Inc.',
+                    signed_up_at: nil
+                  },
+                  properties: {
+                    role: 'admin'
+                  }
+                }
+              ]
+            )
+          end
+        end
+
+        context 'when the include option is set to { relationships: { company: :relationships } }' do
+          subject { described_class.new(context: :push, include: { relationships: { company: :relationships } }) }
+
+          it 'should include relationships' do
+            expect(payload).to eq(
+              identifier: 'user-identifier',
+              email: 'foo@example.com',
+              signed_up_at: nil,
+              relationships: [
+                {
+                  user: 'user-identifier',
+                  company: {
+                    identifier: 'company-identifier',
+                    name: 'Example, Inc.',
+                    signed_up_at: nil,
+                    relationships: [
+                      {
+                        company: 'company-identifier',
+                        user: 'other-user-identifier',
+                        properties: { role: 'member' }
+                      }
+                    ]
+                  },
+                  properties: {
+                    role: 'admin'
+                  }
+                }
+              ]
+            )
+          end
+        end
+      end
     end
 
     context 'when serializing the company' do
