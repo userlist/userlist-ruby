@@ -19,7 +19,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
       end
 
       it 'should set the context to :delete' do
-        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
+        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.options[:context] == :delete })
         relation.delete(payload)
       end
     end
@@ -35,7 +35,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
       end
 
       it 'should set the context to :delete' do
-        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
+        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.options[:context] == :delete })
         relation.delete(payload)
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe Userlist::Push::Operations::Delete do
       end
 
       it 'should set the context to :delete' do
-        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.context == :delete })
+        expect(strategy).to receive(:call).with(:delete, '/users', satisfy { |r| r.options[:context] == :delete })
         relation.delete(payload)
       end
     end
@@ -60,6 +60,17 @@ RSpec.describe Userlist::Push::Operations::Delete do
       it 'should not send a payload to the endpoint' do
         expect(strategy).to_not receive(:call)
         relation.delete(payload)
+      end
+    end
+
+    context 'when given keyword arguments as payload' do
+      let(:payload) do
+        { identifier: identifier }
+      end
+
+      it 'should send the request to the endpoint' do
+        expect(strategy).to receive(:call).with(:delete, '/users', resource.with(context: :delete))
+        relation.delete(identifier:)
       end
     end
 

@@ -7,7 +7,7 @@ module Userlist
             return false unless resource = from_payload(payload, config)
             return false unless resource.delete?
 
-            strategy.call(:delete, endpoint, resource.for_context(:delete))
+            strategy.call(:delete, endpoint, resource.with(context: :delete))
           end
         end
 

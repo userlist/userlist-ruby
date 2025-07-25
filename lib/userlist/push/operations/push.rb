@@ -7,7 +7,7 @@ module Userlist
             return false unless resource = from_payload(payload, config)
             return false unless resource.push?
 
-            strategy.call(:post, endpoint, resource.for_context(:push))
+            strategy.call(:post, endpoint, resource.with(context: :push))
           end
 
           alias create push

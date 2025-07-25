@@ -7,9 +7,10 @@ RSpec.describe Userlist::Push::Operations::Push do
   let(:strategy) { instance_double('Userlist::Push::Strategies::Direct') }
   let(:resource) { resource_type.from_payload(payload) }
 
+  let(:identifier) { 'identifier' }
   let(:payload) do
     {
-      identifier: 'identifier',
+      identifier: identifier,
       properties: {
         first_name: 'John',
         last_name: 'Doe'
@@ -38,7 +39,7 @@ RSpec.describe Userlist::Push::Operations::Push do
       end
 
       it 'should set the context to :push' do
-        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :push })
+        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.options[:context] == :push })
         relation.push(payload)
       end
     end
@@ -52,14 +53,14 @@ RSpec.describe Userlist::Push::Operations::Push do
       end
 
       it 'should set the context to :push' do
-        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.context == :push })
+        expect(strategy).to receive(:call).with(:post, '/users', satisfy { |r| r.options[:context] == :push })
         relation.push(payload)
       end
     end
 
     context 'when given an identifier' do
       let(:payload) do
-        { identifier: 'identifier' }
+        { identifier: identifier }
       end
 
       it 'should send a simple payload to the endpoint' do
@@ -74,6 +75,17 @@ RSpec.describe Userlist::Push::Operations::Push do
       it 'should not send a payload to the endpoint' do
         expect(strategy).to_not receive(:call)
         relation.push(payload)
+      end
+    end
+
+      context 'when given keyword arguments as payload' do
+      let(:payload) do
+        { identifier: identifier }
+      end
+
+      it 'should send the request to the endpoint' do
+        expect(strategy).to receive(:call).with(:post, '/users', resource.with(context: :push))
+        relation.push(identifier:)
       end
     end
 
