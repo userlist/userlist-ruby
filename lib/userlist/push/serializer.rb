@@ -40,8 +40,8 @@ module Userlist
           serialized[name] = resource.send(name)
         end
 
-        resource.relationship_names.each do |name|
-          next unless result = serialize_relationship(resource.send(name))
+        resource.association_names.each do |name|
+          next unless result = serialize_association(resource.send(name))
 
           serialized[name] = result
         end
@@ -49,22 +49,22 @@ module Userlist
         serialized
       end
 
-      def serialize_relationship(relationship)
-        return unless relationship
+      def serialize_association(association)
+        return unless association
 
-        case relationship
+        case association
         when Userlist::Push::ResourceCollection
-          serialize_collection(relationship)
+          serialize_collection(association)
         when Userlist::Push::Resource
-          serialize_resource(relationship)
+          serialize_resource(association)
         else
-          raise "Cannot serialize relationship type: #{relationship.class}"
+          raise "Cannot serialize association type: #{association.class}"
         end
       end
 
       def serialize_collection(collection)
         serialized = collection
-          .map(&method(:serialize_relationship))
+          .map(&method(:serialize_association))
           .compact
           .reject(&:empty?)
 
