@@ -136,6 +136,62 @@ RSpec.describe Userlist::Push::Serializer do
           )
         end
       end
+
+      context 'when there are multiple users in the company' do
+        let(:other_user) do
+          Userlist::Push::User.new(
+            identifier: 'other-user-identifier',
+            email: 'bar@example.com'
+          )
+        end
+
+        let(:other_relationship) do
+          Userlist::Push::Relationship.new(
+            user: other_user,
+            company: company,
+            properties: {
+              role: 'member'
+            }
+          )
+        end
+
+        before do
+          company.relationships = [relationship, other_relationship]
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            identifier: 'user-identifier',
+            email: 'foo@example.com',
+            signed_up_at: nil,
+            relationships: [
+              {
+                user: 'user-identifier',
+                company: {
+                  identifier: 'company-identifier',
+                  name: 'Example, Inc.',
+                  signed_up_at: nil,
+                  relationships: [
+                    {
+                      company: 'company-identifier',
+                      user: {
+                        identifier: 'other-user-identifier',
+                        email: 'bar@example.com'
+                      },
+                      properties: {
+                        role: 'member'
+                      }
+                    }
+                  ]
+                },
+                properties: {
+                  role: 'admin'
+                }
+              }
+            ]
+          )
+        end
+      end
     end
 
     context 'when serializing the company' do
@@ -199,6 +255,60 @@ RSpec.describe Userlist::Push::Serializer do
           )
         end
       end
+
+      context 'when there are multiple users in the company' do
+        let(:other_user) do
+          Userlist::Push::User.new(
+            identifier: 'other-user-identifier',
+            email: 'bar@example.com'
+          )
+        end
+
+        let(:other_relationship) do
+          Userlist::Push::Relationship.new(
+            user: other_user,
+            company: company,
+            properties: {
+              role: 'member'
+            }
+          )
+        end
+
+        before do
+          company.relationships = [relationship, other_relationship]
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            identifier: 'company-identifier',
+            name: 'Example, Inc.',
+            signed_up_at: nil,
+            relationships: [
+              {
+                company: 'company-identifier',
+                user: {
+                  identifier: 'user-identifier',
+                  email: 'foo@example.com',
+                  signed_up_at: nil
+                },
+                properties: {
+                  role: 'admin'
+                }
+              },
+              {
+                company: 'company-identifier',
+                user: {
+                  identifier: 'other-user-identifier',
+                  email: 'bar@example.com'
+                },
+                properties: {
+                  role: 'member'
+                }
+              }
+            ]
+          )
+        end
+      end
     end
 
     context 'when serializing the relationship' do
@@ -239,6 +349,59 @@ RSpec.describe Userlist::Push::Serializer do
 
         it 'should return no payload' do
           expect(payload).to_not be
+        end
+      end
+
+      context 'when there are multiple users in the company' do
+        let(:other_user) do
+          Userlist::Push::User.new(
+            identifier: 'other-user-identifier',
+            email: 'bar@example.com'
+          )
+        end
+
+        let(:other_relationship) do
+          Userlist::Push::Relationship.new(
+            user: other_user,
+            company: company,
+            properties: {
+              role: 'member'
+            }
+          )
+        end
+
+        before do
+          company.relationships = [relationship, other_relationship]
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            user: {
+              identifier: 'user-identifier',
+              email: 'foo@example.com',
+              signed_up_at: nil
+            },
+            company: {
+              identifier: 'company-identifier',
+              name: 'Example, Inc.',
+              signed_up_at: nil,
+              relationships: [
+                {
+                  company: 'company-identifier',
+                  user: {
+                    identifier: 'other-user-identifier',
+                    email: 'bar@example.com'
+                  },
+                  properties: {
+                    role: 'member'
+                  }
+                }
+              ]
+            },
+            properties: {
+              role: 'admin'
+            }
+          )
         end
       end
     end
@@ -307,6 +470,72 @@ RSpec.describe Userlist::Push::Serializer do
 
         it 'should set a default occurred_at' do
           expect(payload[:occurred_at]).to be_within(1).of(Time.now)
+        end
+      end
+
+      context 'when there are multiple users in the company' do
+        let(:other_user) do
+          Userlist::Push::User.new(
+            identifier: 'other-user-identifier',
+            email: 'bar@example.com'
+          )
+        end
+
+        let(:other_relationship) do
+          Userlist::Push::Relationship.new(
+            user: other_user,
+            company: company,
+            properties: {
+              role: 'member'
+            }
+          )
+        end
+
+        before do
+          company.relationships = [relationship, other_relationship]
+        end
+
+        it 'should return the correct payload' do
+          expect(payload).to eq(
+            name: 'example_event',
+            occurred_at: event.occurred_at,
+            user: {
+              identifier: 'user-identifier',
+              email: 'foo@example.com',
+              signed_up_at: nil,
+              relationships: [
+                {
+                  user: 'user-identifier',
+                  company: {
+                    identifier: 'company-identifier',
+                    name: 'Example, Inc.',
+                    signed_up_at: nil,
+                    relationships: [
+                      {
+                        company: 'company-identifier',
+                        user: {
+                          identifier: 'other-user-identifier',
+                          email: 'bar@example.com'
+                        },
+                        properties: {
+                          role: 'member'
+                        }
+                      }
+                    ]
+                  },
+                  properties: {
+                    role: 'admin'
+                  }
+                }
+              ]
+            },
+            company: 'company-identifier',
+            properties: {
+              null: nil,
+              empty: [],
+              value: 'foo'
+            }
+          )
         end
       end
     end
