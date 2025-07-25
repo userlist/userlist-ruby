@@ -19,18 +19,18 @@ module Userlist
           new(payload, config)
         end
 
-        def relationship_names
-          @relationship_names ||= relationships.keys
+        def association_names
+          @association_names ||= associations.keys
         end
 
-        def relationships
-          @relationships ||= {}
+        def associations
+          @associations ||= {}
         end
 
       protected
 
         def has_one(name, type:) # rubocop:disable Naming/PredicateName
-          relationships[name.to_sym] = { type: type }
+          associations[name.to_sym] = { type: type }
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{name}                                        # def company
@@ -40,13 +40,13 @@ module Userlist
         end
 
         def has_many(name, **options) # rubocop:disable Naming/PredicateName
-          relationships[name.to_sym] = options
+          associations[name.to_sym] = options
 
           generated_methods.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{name}                                                             # def companies
-              relationship = self.class.relationships[:#{name}]                     #   relationship = self.class.relationships[:companies]
+              associations = self.class.associations[:#{name}]                     #   associations = self.class.associations[:companies]
                                                                                     #
-              ResourceCollection.new(payload[:#{name}], relationship, self, config) #   ResourceCollection.new(payload[:companies], relationship, self, config)
+              ResourceCollection.new(payload[:#{name}], associations, self, config) #   ResourceCollection.new(payload[:companies], associations, self, config)
             end                                                                     # end
           RUBY
         end
@@ -96,11 +96,11 @@ module Userlist
       alias == eql?
 
       def attribute_names
-        payload.keys.map(&:to_sym) - relationship_names
+        payload.keys.map(&:to_sym) - association_names
       end
 
-      def relationship_names
-        self.class.relationship_names.to_a
+      def association_names
+        self.class.association_names.to_a
       end
 
       def push?
