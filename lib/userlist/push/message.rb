@@ -4,6 +4,7 @@ module Userlist
       include Operations::Push
 
       has_one :user, type: 'Userlist::Push::User'
+      has_one :company, type: 'Userlist::Push::Company'
 
       def initialize(payload = {}, config = Userlist.config)
         raise Userlist::ArgumentError, 'Missing required payload' unless payload

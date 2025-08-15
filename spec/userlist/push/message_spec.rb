@@ -5,6 +5,7 @@ RSpec.describe Userlist::Push::Message do
     {
       template: 'template-identifier',
       user: 'user-identifier',
+      company: 'company-identifier',
       properties: {
         value: '$100.00'
       }
@@ -33,6 +34,25 @@ RSpec.describe Userlist::Push::Message do
 
     it 'should convert it into a user object' do
       expect(subject.user).to be_kind_of(Userlist::Push::User)
+    end
+
+    it 'should be pushable' do
+      expect(subject.push?).to be_truthy
+    end
+  end
+
+  context 'when a company hash is given' do
+    let(:payload) do
+      super().merge(
+        company: {
+          identifier: 'company-identifier',
+          name: 'Example Company'
+        }
+      )
+    end
+
+    it 'should convert it into a company object' do
+      expect(subject.company).to be_kind_of(Userlist::Push::Company)
     end
 
     it 'should be pushable' do
