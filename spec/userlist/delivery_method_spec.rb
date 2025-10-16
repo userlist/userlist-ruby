@@ -104,5 +104,55 @@ RSpec.describe Userlist::DeliveryMethod do
         delivery_method.deliver!(mail)
       end
     end
+
+    context 'with reply_to address' do
+      let(:mail) do
+        Mail.new(
+          to: 'user@example.com',
+          from: 'sender@example.com',
+          reply_to: 'reply@example.com',
+          subject: 'Test Subject',
+          body: 'Hello world'
+        )
+      end
+
+      it 'includes reply_to in the payload' do
+        expected_payload = {
+          to: ['user@example.com'],
+          from: ['sender@example.com'],
+          reply_to: ['reply@example.com'],
+          subject: 'Test Subject',
+          body: { type: :text, content: 'Hello world' },
+          theme: nil
+        }
+
+        expect(messages).to receive(:push).with(expected_payload)
+        delivery_method.deliver!(mail)
+      end
+    end
+
+    context 'without reply_to address' do
+      let(:mail) do
+        Mail.new(
+          to: 'user@example.com',
+          from: 'sender@example.com',
+          subject: 'Test Subject',
+          body: 'Hello world'
+        )
+      end
+
+      it 'omits reply_to from the payload' do
+        expected_payload = {
+          to: ['user@example.com'],
+          from: ['sender@example.com'],
+          subject: 'Test Subject',
+          body: { type: :text, content: 'Hello world' },
+          theme: nil
+        }
+
+        expect(messages).to receive(:push).with(expected_payload)
+        delivery_method.deliver!(mail)
+      end
+    end
   end
 end

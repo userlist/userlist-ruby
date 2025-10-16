@@ -19,12 +19,15 @@ private
     {
       to: serialize_address(mail.to),
       from: serialize_address(mail.from),
+      reply_to: serialize_address(mail.reply_to),
       subject: mail.subject,
       body: serialize_body(mail.body)
     }.compact
   end
 
   def serialize_address(address)
+    return if address.nil? || Array(address).empty?
+
     Array(address).map(&:to_s)
   end
 
