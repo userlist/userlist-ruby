@@ -2,6 +2,12 @@
 
 ## Unreleased (main)
 
+## v1.1.0 (2025-10-17)
+
+- Allow specifying companies in messages
+- Add reply_to support to DeliveryMethod for ActionMailer integration
+- Fixes issue with deleting resources when they are not pushed by default
+
 ## v1.0.0 (2025-04-08)
 
 - Updates ActiveJob Worker to retry on errors with polynomially longer wait times, up to 10 attempts
