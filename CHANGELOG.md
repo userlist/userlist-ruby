@@ -2,6 +2,8 @@
 
 ## Unreleased (main)
 
+- Prevents serializing of large graphs of relationships between users and companies
+
 ## v1.1.0 (2025-10-17)
 
 - Allow specifying companies in messages

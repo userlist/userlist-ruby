@@ -28,25 +28,23 @@ module Userlist
     private
 
       def serialize_resource(resource)
-        return resource.identifier if serialized_resources.include?(resource)
+        preventing_circular_serialization(resource, fallback: resource.identifier) do
+          return unless serialize?(resource)
 
-        serialized_resources << resource
+          serialized = {}
 
-        return unless serialize?(resource)
+          resource.attribute_names.each do |name|
+            serialized[name] = resource.send(name)
+          end
 
-        serialized = {}
+          resource.association_names.each do |name|
+            next unless result = serialize_association(resource.send(name))
 
-        resource.attribute_names.each do |name|
-          serialized[name] = resource.send(name)
+            serialized[name] = result
+          end
+
+          serialized
         end
-
-        resource.association_names.each do |name|
-          next unless result = serialize_association(resource.send(name))
-
-          serialized[name] = result
-        end
-
-        serialized
       end
 
       def serialize_association(association)
@@ -73,6 +71,23 @@ module Userlist
 
       def serialized_resources
         @serialized_resources ||= Set.new
+      end
+
+      def serialized_types
+        @serialized_types ||= Set.new
+      end
+
+      def preventing_circular_serialization(resource, fallback: nil)
+        return fallback if serialized_types.include?(resource.class) || serialized_resources.include?(resource)
+
+        serialized_types.add(resource.class)
+        serialized_resources.add(resource)
+
+        begin
+          yield
+        ensure
+          serialized_types.delete(resource.class)
+        end
       end
     end
   end

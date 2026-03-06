@@ -170,19 +170,7 @@ RSpec.describe Userlist::Push::Serializer do
                 company: {
                   identifier: 'company-identifier',
                   name: 'Example, Inc.',
-                  signed_up_at: nil,
-                  relationships: [
-                    {
-                      company: 'company-identifier',
-                      user: {
-                        identifier: 'other-user-identifier',
-                        email: 'bar@example.com'
-                      },
-                      properties: {
-                        role: 'member'
-                      }
-                    }
-                  ]
+                  signed_up_at: nil
                 },
                 properties: {
                   role: 'admin'
@@ -384,19 +372,7 @@ RSpec.describe Userlist::Push::Serializer do
             company: {
               identifier: 'company-identifier',
               name: 'Example, Inc.',
-              signed_up_at: nil,
-              relationships: [
-                {
-                  company: 'company-identifier',
-                  user: {
-                    identifier: 'other-user-identifier',
-                    email: 'bar@example.com'
-                  },
-                  properties: {
-                    role: 'member'
-                  }
-                }
-              ]
+              signed_up_at: nil
             },
             properties: {
               role: 'admin'
@@ -509,19 +485,7 @@ RSpec.describe Userlist::Push::Serializer do
                   company: {
                     identifier: 'company-identifier',
                     name: 'Example, Inc.',
-                    signed_up_at: nil,
-                    relationships: [
-                      {
-                        company: 'company-identifier',
-                        user: {
-                          identifier: 'other-user-identifier',
-                          email: 'bar@example.com'
-                        },
-                        properties: {
-                          role: 'member'
-                        }
-                      }
-                    ]
+                    signed_up_at: nil
                   },
                   properties: {
                     role: 'admin'
