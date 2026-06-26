@@ -10,6 +10,10 @@ module Userlist
       def push?
         super && user&.push? && company&.push?
       end
+
+      def delete?
+        super && user&.delete? && company&.delete?
+      end
     end
   end
 end

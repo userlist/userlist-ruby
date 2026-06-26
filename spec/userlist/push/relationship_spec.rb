@@ -46,6 +46,10 @@ RSpec.describe Userlist::Push::Relationship do
     it 'should be pushable' do
       expect(subject.push?).to be_truthy
     end
+
+    it 'should be deletable' do
+      expect(subject.delete?).to be_truthy
+    end
   end
 
   context 'when a company hash is given' do
@@ -72,6 +76,10 @@ RSpec.describe Userlist::Push::Relationship do
     it 'should be pushable' do
       expect(subject.push?).to be_truthy
     end
+
+    it 'should be deletable' do
+      expect(subject.delete?).to be_truthy
+    end
   end
 
   context 'when the user is missing' do
@@ -82,6 +90,10 @@ RSpec.describe Userlist::Push::Relationship do
     it 'should not be pushable' do
       expect(subject.push?).to be_falsey
     end
+
+    it 'should not be deletable' do
+      expect(subject.delete?).to be_falsey
+    end
   end
 
   context 'when the company is missing' do
@@ -91,6 +103,10 @@ RSpec.describe Userlist::Push::Relationship do
 
     it 'should not be pushable' do
       expect(subject.push?).to be_falsey
+    end
+
+    it 'should not be deletable' do
+      expect(subject.delete?).to be_falsey
     end
   end
 end

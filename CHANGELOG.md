@@ -2,6 +2,7 @@
 
 ## Unreleased (main)
 
+- Make sure relationships without either a user or a company are not deletable
 - Prevents serializing of large graphs of relationships between users and companies
 
 ## v1.1.0 (2025-10-17)
