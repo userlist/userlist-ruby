@@ -30,8 +30,7 @@ RSpec.describe Userlist::DeliveryMethod do
           to: ['user@example.com'],
           from: ['sender@example.com'],
           subject: 'Test Subject',
-          body: { type: :text, content: 'Hello world' },
-          theme: nil
+          body: { type: :text, content: 'Hello world' }
         }
 
         expect(messages).to receive(:push).with(expected_payload)
@@ -58,8 +57,7 @@ RSpec.describe Userlist::DeliveryMethod do
           to: ['user@example.com'],
           from: ['sender@example.com'],
           subject: 'Test Subject',
-          body: { type: :html, content: '<p>Hello world</p>' },
-          theme: nil
+          body: { type: :html, content: '<p>Hello world</p>' }
         }
 
         expect(messages).to receive(:push).with(expected_payload)
@@ -96,8 +94,7 @@ RSpec.describe Userlist::DeliveryMethod do
               { type: :text, content: 'Hello world' },
               { type: :html, content: '<p>Hello world</p>' }
             ]
-          },
-          theme: nil
+          }
         }
 
         expect(messages).to receive(:push).with(expected_payload)
@@ -122,8 +119,7 @@ RSpec.describe Userlist::DeliveryMethod do
           from: ['sender@example.com'],
           reply_to: ['reply@example.com'],
           subject: 'Test Subject',
-          body: { type: :text, content: 'Hello world' },
-          theme: nil
+          body: { type: :text, content: 'Hello world' }
         }
 
         expect(messages).to receive(:push).with(expected_payload)
@@ -146,8 +142,7 @@ RSpec.describe Userlist::DeliveryMethod do
           to: ['user@example.com'],
           from: ['sender@example.com'],
           subject: 'Test Subject',
-          body: { type: :text, content: 'Hello world' },
-          theme: nil
+          body: { type: :text, content: 'Hello world' }
         }
 
         expect(messages).to receive(:push).with(expected_payload)

@@ -10,7 +10,7 @@ class Userlist::DeliveryMethod
   def deliver!(mail)
     message = serialize(mail)
 
-    userlist.messages.push(message.merge(theme: nil))
+    userlist.messages.push(message)
   end
 
 private

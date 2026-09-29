@@ -3,7 +3,7 @@
 ## Unreleased (main)
 
 - Make sure relationships without either a user or a company are not deletable
-- Prevents serializing of large graphs of relationships between users and companies
+- Don't explicitly set theme to nil when sending messages via the delivery method
 
 ## v1.1.0 (2025-10-17)
 
