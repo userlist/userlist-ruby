@@ -62,7 +62,9 @@ module Userlist
     def encode(payload)
       payload = JSON.generate(payload) unless payload.is_a?(String)
 
-      Base64.urlsafe_encode64(payload).tr('=', '')
+      # Same output as Base64.urlsafe_encode64 without padding. Array#pack is core Ruby, so this works
+      # without the base64 gem, which is no longer a default gem on Ruby 3.4 and later.
+      [payload].pack('m0').tr('+/', '-_').delete('=')
     end
   end
 end
