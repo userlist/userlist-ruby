@@ -66,5 +66,32 @@ RSpec.describe Userlist::Token do
           .to_not raise_error
       end
     end
+
+    it 'should encode each part like unpadded urlsafe Base64' do
+      require 'base64'
+
+      parts = token.split('.')
+      expect(parts.size).to eq(3)
+
+      parts.each do |part|
+        decoded = part.tr('-_', '+/').ljust((part.size + 3) / 4 * 4, '=').unpack1('m0')
+        expect(part).to eq(Base64.urlsafe_encode64(decoded).delete('='))
+      end
+    end
+
+    it 'should generate a token when nothing has loaded the base64 library' do
+      require 'open3'
+      require 'rbconfig'
+
+      script = <<~RUBY
+        require 'userlist'
+        print Userlist::Token.generate('#{identifier}', push_key: '#{push_key}', push_id: '#{push_id}')
+      RUBY
+      lib = File.expand_path('../../lib', __dir__)
+      output, error, status = Open3.capture3(RbConfig.ruby, '-I', lib, '-e', script)
+
+      expect(status).to be_success, error
+      expect { JWT.decode(output, push_key, true, algorithm: 'HS256') }.to_not raise_error
+    end
   end
 end
